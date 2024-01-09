@@ -10,6 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.doan_3tuan.View.Chitiet_Screen
+import com.example.doan_3tuan.View.TrangChuScreen
+import com.example.doan_3tuan.ViewModel.RootGraph
 import com.example.doan_3tuan.ui.theme.Doan_3tuanTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,27 +21,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Doan_3tuanTheme {
+                val navRootController = rememberNavController()
+                RootGraph(navHostController = navRootController)
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android")
+                    RootGraph(navHostController = navRootController)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-            text = "Hello $name!",
-            modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Doan_3tuanTheme {
-        Greeting("Android")
     }
 }
