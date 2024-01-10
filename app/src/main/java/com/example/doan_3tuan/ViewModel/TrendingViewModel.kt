@@ -1,12 +1,12 @@
-package com.example.doan_3tuan
+package com.example.doan_3tuan.ViewModel
 
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.example.doan_3tuan.Model.Trending
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.BufferedReader
-import java.text.SimpleDateFormat
 
 class TrendingViewModel(private val context: Context) : ViewModel() {
     private var trending: List<Trending> = emptyList()

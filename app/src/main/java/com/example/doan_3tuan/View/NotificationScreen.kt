@@ -1,4 +1,4 @@
-package com.example.doan_3tuan
+package com.example.doan_3tuan.View
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.doan_3tuan.Model.Notification
+import com.example.doan_3tuan.ViewModel.NotificationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +56,6 @@ fun NotificationScreen(viewModel: NotificationViewModel) {
                             modifier = Modifier.fillMaxWidth(),
                             text = "Notification",
                             fontSize = 30.sp,
-
                             fontWeight = FontWeight.ExtraBold
                         )
                     },
@@ -70,7 +72,8 @@ fun NotificationScreen(viewModel: NotificationViewModel) {
                                 }
                             })
                         Text(text = "Cũ nhất")
-                    }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(Color(0xFF07899B))
                 )
             }
         }

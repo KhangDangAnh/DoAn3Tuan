@@ -1,6 +1,6 @@
-package com.example.doan_3tuan
+package com.example.doan_3tuan.Model
 
-class Trending (
+data class Trending (
     val title: String,
     val imageURL: String,
     val time: String,

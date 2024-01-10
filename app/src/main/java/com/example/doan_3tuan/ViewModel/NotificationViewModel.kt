@@ -1,7 +1,8 @@
-package com.example.doan_3tuan
+package com.example.doan_3tuan.ViewModel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.example.doan_3tuan.Model.Notification
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.BufferedReader

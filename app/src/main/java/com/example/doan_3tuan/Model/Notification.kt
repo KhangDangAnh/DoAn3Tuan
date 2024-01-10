@@ -1,4 +1,4 @@
-package com.example.doan_3tuan
+package com.example.doan_3tuan.Model
 
 data class Notification(
     val title: String,
