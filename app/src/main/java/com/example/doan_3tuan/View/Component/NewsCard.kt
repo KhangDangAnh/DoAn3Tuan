@@ -1,4 +1,4 @@
-package com.example.doan_3tuan.View
+package com.example.doan_3tuan.View.Component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

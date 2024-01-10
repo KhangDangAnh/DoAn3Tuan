@@ -1,8 +1,7 @@
-package com.example.doan_3tuan.View
+package com.example.doan_3tuan.View.Screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,17 +15,15 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.R
+import com.example.doan_3tuan.View.Component.News_Card
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +38,7 @@ fun Chitiet_Screen(navController: NavHostController) {
         kotlin.Pair(R.drawable.img, "News"),
         kotlin.Pair(R.drawable.img, "News")
     )
-
+    var color = 0xFF07899B
     Scaffold(
         topBar = {
             TopAppBar(
@@ -51,7 +48,7 @@ fun Chitiet_Screen(navController: NavHostController) {
                         Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(Color(0xFF07899B)),
+ //               colors = TopAppBarDefaults.topAppBarColors(Color(color)),
             )
         },
         bottomBar = {

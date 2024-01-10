@@ -1,18 +1,17 @@
-package com.example.doan_3tuan.View
+package com.example.doan_3tuan.View.Screen
 
+import com.example.doan_3tuan.ViewModel.BVviewModel.HomeViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Search
@@ -21,6 +20,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
@@ -44,16 +44,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.doan_3tuan.Model.BottomNavigationItem
-import com.example.doan_3tuan.Model.NavRoot
+import com.example.doan_3tuan.Model.UiResult
 import com.example.doan_3tuan.R
-import com.example.doan_3tuan.ViewModel.RootGraph
+import com.example.doan_3tuan.View.Component.Baiviet_Card
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrangChuScreen(navCotroller: NavHostController) {
+    val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    val homeState = viewModel.uiState.collectAsStateWithLifecycle()
+    val state = homeState.value
     val items = listOf(
         BottomNavigationItem(
             "Tin Tức",
@@ -130,7 +135,7 @@ fun TrangChuScreen(navCotroller: NavHostController) {
         Scaffold(topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(Color(0xFF07899B)),
-                title = { Text(text = "") },
+                title = {},
                 navigationIcon = {
                     IconButton(onClick = {
                         scope.launch {
@@ -172,26 +177,45 @@ fun TrangChuScreen(navCotroller: NavHostController) {
                 }
             }
         }) {
-            LazyColumn(modifier = Modifier.padding(it)) {
-                item {
-                    Text(text = "Đọc nhiều", fontWeight = FontWeight.ExtraBold)
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(start = 8.dp, end = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            when (val state = homeState.value) {
+                is UiResult.Fail -> {
+                    // todo: show something ~
+                }
+
+                UiResult.Loading -> {
+                    // todo: show something ~
+                }
+
+                is UiResult.Success -> {
+                    val data = state.data
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(it),
+                        contentPadding = PaddingValues(16.dp)
                     ) {
-                        items(news) {
-                            Slide_Card(img = it.first, title = it.second)
+                        item {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .padding(18.dp)
+                            ) {
+                                Text(
+                                    data.title,
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                                Text(
+                                    data.description,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                        }
+                        items(data.baiviet) { item ->
+                            Baiviet_Card(item) {
+                            }
                         }
                     }
-                }//item
-                items(news)
-                {
-                    Divider()
-                    News_Card(
-                        img = it.first,
-                        title = it.second,
-                        Click = { navCotroller.navigate(NavRoot.chitiet.root) })
                 }
             }
         }

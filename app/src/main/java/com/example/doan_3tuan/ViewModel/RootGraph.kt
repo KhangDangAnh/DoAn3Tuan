@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.doan_3tuan.Model.NavRoot
-import com.example.doan_3tuan.View.Chitiet_Screen
-import com.example.doan_3tuan.View.TrangChuScreen
+import com.example.doan_3tuan.View.Screen.Chitiet_Screen
+import com.example.doan_3tuan.View.Screen.TrangChuScreen
 @Composable
 fun RootGraph(navHostController: NavHostController)
 {
