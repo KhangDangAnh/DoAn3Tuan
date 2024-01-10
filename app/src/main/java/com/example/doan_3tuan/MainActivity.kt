@@ -15,29 +15,13 @@ import com.example.doan_3tuan.ui.theme.Doan_3tuanTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModelNotification = NotificationViewModel(this)
+        val viewModelTrending = TrendingViewModel(this)
         setContent {
             Doan_3tuanTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android")
-                }
+                //NotificationScreen(viewModel = viewModel)
+                TrendingScreen(viewModel=viewModelTrending)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-            text = "Hello $name!",
-            modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Doan_3tuanTheme {
-        Greeting("Android")
     }
 }
