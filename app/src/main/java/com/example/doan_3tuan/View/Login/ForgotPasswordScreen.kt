@@ -36,20 +36,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(
-
+    navController: NavHostController
 ){
-    val tfColor = Color(red = 217, green = 217, blue = 217)
+    val tfColor = Color(0xFFD9D9D9)
     //màu chữ sau TextField
-    val behindTextColor = Color(red = 161, green = 163, blue = 139)
-    //màu chữ giới thiệu
-    val guideTextColor = Color(red = 139, green = 201, blue = 210)
+    val behindTextColor = Color(0xFF61624B)
     //màu chủ đạo
-    val mainColor = Color(red = 7, green = 137, blue = 155)
+    val mainColor = Color(0xFF07899B)
+    //màu chữ giới thiệu
+    val guideTextColor = Color(0xFF8BC9D2)
 
     Scaffold (
         topBar = {
@@ -60,7 +61,7 @@ fun ForgotPasswordScreen(
                     IconButton(
                         colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                         onClick = {
-                            //navController.popBackStack()
+                            navController.popBackStack()
                         }
                     ) {
                         Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "", tint = Color.Black)

@@ -29,6 +29,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,41 +40,61 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.example.doan_3tuan.View.Screen
+import com.example.doan_3tuan.ViewModel.AccountViewModel
+import com.example.doan_3tuan.ViewModel.DialogSample
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
-
-){
-    val tfColor = Color(red = 217, green = 217, blue = 217)
+    navController: NavHostController
+) {
+    val tfColor = Color(0xFFD9D9D9)
     //màu chữ sau TextField
-    val behindTextColor = Color(red = 161, green = 163, blue = 139)
+    val behindTextColor = Color(0xFF61624B)
     //màu chủ đạo
-    val mainColor = Color(red = 7, green = 137, blue = 155)
+    val mainColor = Color(0xFF07899B)
 
-    Scaffold (
+    var viewModel: AccountViewModel = viewModel(
+        modelClass = AccountViewModel::class.java
+    )
+    var state = viewModel.state
+    var idDialog by remember{ mutableStateOf(0)}
+    var openDialog by remember { mutableStateOf(false) }
+    Scaffold(
         topBar = {
             TopAppBar(
-                colors = TopAppBarDefaults.largeTopAppBarColors(containerColor = mainColor, titleContentColor = Color.White),
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = mainColor,
+                    titleContentColor = Color.White
+                ),
                 title = {},
                 navigationIcon = {
                     IconButton(
                         colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                         onClick = {
-                            //navController.popBackStack()
+                            navController.popBackStack()
                         }
                     ) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "",tint = Color.Black)
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "",
+                            tint = Color.Black
+                        )
                     }
                 },
             )
         }
 
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .padding(it)
@@ -95,14 +119,14 @@ fun RegisterScreen(
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Light,
                         modifier = Modifier.fillMaxWidth(),
-                        color =  mainColor,
+                        color = mainColor,
                         fontSize = 35.sp,
                     )
                 }
 
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = state.email,
+                    onValueChange = viewModel::onChangeEmail,
                     label = {
                         Text(text = "Email", textAlign = TextAlign.Center, color = behindTextColor)
                     },
@@ -116,14 +140,18 @@ fun RegisterScreen(
                 )
                 Spacer(modifier = Modifier.padding(5.dp))
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = state.password,
+                    onValueChange = viewModel::onChangePassword,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password
                     ),
                     visualTransformation = PasswordVisualTransformation(),
                     label = {
-                        Text(text = "Mật khẩu", textAlign = TextAlign.Center, color = behindTextColor)
+                        Text(
+                            text = "Mật khẩu",
+                            textAlign = TextAlign.Center,
+                            color = behindTextColor
+                        )
                     },
                     shape = RoundedCornerShape(15),
                     colors = TextFieldDefaults.colors(
@@ -134,14 +162,18 @@ fun RegisterScreen(
                 )
                 Spacer(modifier = Modifier.padding(5.dp))
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = state.rePassword,
+                    onValueChange =  viewModel::onChangeRePassword,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password
                     ),
                     visualTransformation = PasswordVisualTransformation(),
                     label = {
-                        Text(text = "Nhập lại mật khẩu", textAlign = TextAlign.Center, color = behindTextColor)
+                        Text(
+                            text = "Nhập lại mật khẩu",
+                            textAlign = TextAlign.Center,
+                            color = behindTextColor
+                        )
                     },
                     shape = RoundedCornerShape(15),
                     colors = TextFieldDefaults.colors(
@@ -157,22 +189,61 @@ fun RegisterScreen(
                 ) {
                     Button(
                         shape = RoundedCornerShape(0),
-                        colors = ButtonDefaults.buttonColors(containerColor = mainColor, contentColor = Color.White),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = mainColor,
+                            contentColor = Color.White
+                        ),
                         modifier = Modifier.size(width = 350.dp, height = 45.dp),
                         onClick = {
+                            if (state.email.isNullOrEmpty() || state.password.isNullOrEmpty()) {
+                                idDialog = 1
+                                openDialog = true
 
+                            }
+                            else if (state.rePassword != state.password) {
+                                idDialog = 2
+                                openDialog = true
+
+                            }
+                            else {
+                                viewModel.addUser()
+                                if (state.success) {
+                                    navController.navigate(Screen.Login.route) {
+                                        launchSingleTop = true
+                                    }
+                                }
+                            }
                         }) {
-                        Text(text="Đăng ký", fontSize = 22.sp, fontWeight = FontWeight.Light)
+                        Text(text = "Đăng ký", fontSize = 22.sp, fontWeight = FontWeight.Light)
                     }
                 }
                 TextButton(
                     modifier = Modifier.height(35.dp),
-                    onClick = {}
+                    onClick = {
+                        navController.navigate(Screen.Login.route)
+                    }
 
                 ) {
                     Text(text = "Quay lại đăng nhập", color = mainColor)
                 }
             }
         }
+    }
+    if (openDialog) {
+        var text: String = ""
+        if (idDialog == 1) {
+            text = "Mời bạn nhập đầy đủ"
+        } else if(idDialog == 2){
+            text = "Mật khẩu không trùng khớp"
+        }
+        DialogSample(
+            onDiss = {
+                openDialog = false
+            },
+            onConfirm = {
+                openDialog = false
+            },
+            title = text,
+        )
     }
 }

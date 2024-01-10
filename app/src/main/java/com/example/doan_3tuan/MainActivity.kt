@@ -10,19 +10,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.doan_3tuan.View.Login.ForgotPasswordScreen
 import com.example.doan_3tuan.View.Login.LoginScreen
 import com.example.doan_3tuan.View.Login.RegisterScreen
+import com.example.doan_3tuan.View.NavGraph
 import com.example.doan_3tuan.ui.theme.Doan_3tuanTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             Doan_3tuanTheme {
                 // A surface container using the 'background' color from the theme
+                var navcontroller = rememberNavController()
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    ForgotPasswordScreen()
+                    NavGraph(navController = navcontroller)
                 }
             }
         }
@@ -30,15 +34,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(
+
+) {
     Text(
-            text = "Hello $name!",
-            modifier = modifier
+        text = "Hello Tep!",
+
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    RegisterScreen()
+
 }
