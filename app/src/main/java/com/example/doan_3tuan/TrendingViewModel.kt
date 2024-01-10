@@ -12,8 +12,8 @@ class TrendingViewModel(private val context: Context) : ViewModel() {
     private var trending: List<Trending> = emptyList()
     fun getTrending(): List<Trending> {
         if (trending.isEmpty()) {
-            val json = readJsonFromFile(context, "notifications.json")
-            val type = object : TypeToken<List<Notification>>() {}.type
+            val json = readJsonFromFile(context, "trending.json")
+            val type = object : TypeToken<List<Trending>>() {}.type
             trending = Gson().fromJson(json, type)
         }
         return trending

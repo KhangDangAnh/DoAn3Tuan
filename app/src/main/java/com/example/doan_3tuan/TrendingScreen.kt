@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -75,10 +77,13 @@ fun ListTrending(title:String, viewModel: TrendingViewModel){
         mutableStateOf(viewModel.getTrending())
     }
     Column() {
-        Text(text = title, color = Color.Blue)
+        Row {
+            Icon(imageVector = Icons.Default.Star, contentDescription = null)
+            Text(text = title, color = Color.Blue)
+        }
         LazyColumn(
             Modifier
-                .height(600.dp)
+                .height(450.dp)
                 .padding(15.dp),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -108,7 +113,7 @@ fun TrendingCard(trending:Trending){
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(model = trending.imageURL, contentDescription = null,modifier = Modifier
-                .size(145.dp)
+                .size(130.dp)
                 .clip(
                     CircleShape
                 ))
@@ -124,23 +129,17 @@ fun TrendingCard(trending:Trending){
                     Text(
                         text = if (trending.title.length > 20)
                             trending.title.substring(0, 20)+"..."
-                        else trending.title, fontSize = 20.sp
+                        else trending.title, fontSize = 30.sp
                     )
                 }
                 Text(
                     text = trending.time,
-                    fontSize = 12.sp,
+                    fontSize = 15.sp,
                     color = Color.Gray
                 )
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun XemTruoc() {
-
 }
 
 
