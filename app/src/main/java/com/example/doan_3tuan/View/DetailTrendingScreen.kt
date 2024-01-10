@@ -1,8 +1,10 @@
 package com.example.doan_3tuan.View
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -100,32 +103,37 @@ fun CardTrend(trending: Trending){
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
-            .padding(5.dp),
+            .padding(2.dp),
+        colors = CardDefaults.cardColors(Color.LightGray)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp, 0.dp),
+                .padding(2.dp, 0.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(model = trending.imageURL, contentDescription = null,modifier = Modifier
-                .size(150.dp))
+                .size(200.dp))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(1.dp)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
 
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = trending.title, fontSize = 25.sp
+                        text = if (trending.title.length > 25)
+                            trending.title.substring(0, 25)+"..."
+                        else trending.title, fontSize = 20.sp
                     )
                 }
                 Text(
                     text = trending.time,
-                    fontSize = 15.sp,
+                    fontSize = 12.sp,
                     color = Color.Gray
                 )
             }

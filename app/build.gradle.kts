@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+//    id("kotlin-kapt")
+//    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -12,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.example.doan_3tuan"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -39,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.4.4"
     }
     packaging {
         resources {
@@ -52,8 +54,19 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
-    implementation("com.google.android.exoplayer:exoplayer:2.18.0")
-    
+
+//    implementation("com.google.dagger:hilt-android:2.44")
+//    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+//    kapt("com.google.dagger:hilt-android-compiler:2.44")
+//    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+//    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+//
+//    implementation("androidx.media3:media3-exoplayer:1.2.0")
+//    implementation("androidx.media3:media3-exoplayer-dash:1.2.0")
+//    implementation("androidx.media3:media3-ui:1.2.0")
+
+    implementation("com.google.android.exoplayer:exoplayer:2.15.0")
+    implementation("com.github.skydoves:landscapist-glide:1.3.1")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
@@ -71,3 +84,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
+//kapt {
+//    correctErrorTypes = true
+//}

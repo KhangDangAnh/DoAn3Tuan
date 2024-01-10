@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -99,20 +101,23 @@ fun TrendingCard(trending: Trending){
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
-            .padding(5.dp),
+            .padding(1.dp),
+        colors = CardDefaults.cardColors(Color.LightGray)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(5.dp, 0.dp),
+                .padding(2.dp, 0.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(model = trending.imageURL, contentDescription = null,modifier = Modifier
-                .size(140.dp))
+                .size(200.dp))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(5.dp)
+                    .padding(2.dp)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
 
             ) {
                 Row(
