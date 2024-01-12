@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "27387512265",
+    "project_id": "doan3tuan-3bf2d",
+    "storage_bucket": "doan3tuan-3bf2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27387512265:android:996f2402259204dbd0d418",
+        "android_client_info": {
+          "package_name": "com.example.doan_3tuan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "27387512265-e5fm212ie901r88vjanr0olngkdn16ci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjWWWidFEDhET6ifqUPfgjJFDPPmzGfo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "27387512265-e5fm212ie901r88vjanr0olngkdn16ci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
