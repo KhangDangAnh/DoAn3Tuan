@@ -58,7 +58,7 @@ fun SettingFontScreen(){
                     )
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color.Blue,
+                    containerColor = Color(0xFF07899B),
                     titleContentColor = Color.White,
                 ),
                 navigationIcon = {
@@ -86,7 +86,6 @@ fun SettingFontScreen(){
             ) {
                 Text(
                     text = "Font chữ:",
-                    color = Color.Black,
                     fontSize = 20.sp
                 )
 
@@ -144,7 +143,6 @@ fun SettingFontScreen(){
             ) {
                 Text(
                     text = "Cỡ chữ: ",
-                    color = Color.Black,
                     fontSize = 20.sp
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
