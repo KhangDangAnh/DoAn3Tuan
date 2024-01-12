@@ -32,19 +32,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Composable
-fun Greeting(
-
-) {
-    Text(
-        text = "Hello Tep!",
-
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-
-}
