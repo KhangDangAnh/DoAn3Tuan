@@ -41,7 +41,7 @@ fun SaveNewsScreen(){
                     )
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color.Blue,
+                    containerColor = Color(0xFF07899B),
                     titleContentColor = Color.White,
                 ),
                 actions = {
