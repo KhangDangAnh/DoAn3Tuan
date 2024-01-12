@@ -36,6 +36,7 @@ class AccountViewModel : ViewModel() {
             }
         }
     }
+
     fun SignIn(){
         FirebaseAuth.getInstance().signInWithEmailAndPassword(state.email,state.password).addOnCompleteListener {
             state = state.copy(success = it.isSuccessful)

@@ -1,5 +1,6 @@
 package com.example.doan_3tuan.View.Login
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -63,7 +64,8 @@ import com.example.doan_3tuan.ViewModel.DialogSample
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    //_state :SignInState
+    stateGoogle : SignInState,
+    onSignInClick: ()->Unit
 ){
     //màu TextField
     val tfColor = Color(0xFFD9D9D9)
@@ -79,16 +81,8 @@ fun LoginScreen(
 
     var idDialog by remember{ mutableStateOf(0) }
     var openDialog by remember { mutableStateOf(false) }
-    val context = LocalContext.current
-//    LaunchedEffect(key1 = _state.signInError){
-//        _state.signInError?.let { error->
-//            Toast.makeText(
-//                context,
-//                error,
-//                Toast.LENGTH_LONG
-//            ).show()
-//        }
-//    }
+
+
     Scaffold (
         topBar = {
             TopAppBar(
@@ -178,36 +172,10 @@ fun LoginScreen(
                 }
                 Spacer(modifier = Modifier.padding(25.dp))
                 Text(text = "Hoặc đăng nhập với tài khoản", fontSize = 12.sp)
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(45.dp),
-                    onClick = {},
-                    shape = RoundedCornerShape(5.dp),
-                    border = BorderStroke(width = 1.5.dp, color = Color.Black)
-                ) {
-                    Row (
-                        modifier = Modifier.fillMaxWidth(),
-
-                        verticalAlignment = Alignment.CenterVertically,
-                    ){
-                        Image(
-                            painter = painterResource(id = R.drawable.gg_icon),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .size(33.dp)
-
-                        )
-                        Text(
-                            text = "Sign in with Google",
-                            textAlign = TextAlign.Center,
-                            fontSize = 20.sp,
-                            modifier = Modifier.padding(5.dp)
-
-                        )
-                    }
-                }
+                GoogleCard(
+                    state = stateGoogle,
+                    onSignInClick = onSignInClick
+                )
                 Spacer(Modifier.padding(5.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -248,7 +216,7 @@ fun LoginScreen(
         }
     }
     if (openDialog) {
-        var text: String = ""
+        var text= ""
         if (idDialog == 1) {
             text = "Mời bạn nhập đầy đủ"
         } else if(idDialog == 2){

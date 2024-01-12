@@ -5,10 +5,10 @@ data class User (
     var password:String = ""
 )
 
-//data class SignInResult(
-//    val data: com.example.doan_3tuan.Model.UserData?,
-//    val errorMessage:String?
-//)
+data class SignInResult(
+    val data: UserData?,
+    val errorMessage:String?
+)
 
 data class UserData(
     val userId :String,
