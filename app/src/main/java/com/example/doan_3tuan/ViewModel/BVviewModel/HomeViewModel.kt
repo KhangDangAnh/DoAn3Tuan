@@ -36,7 +36,7 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val home = withContext(Dispatchers.IO) {
-                    val response = cloudService.getArticles()
+                    val response = cloudService.getBaiviet()
                     uiMapper.map(response)
                 }
                 _uiState.update {

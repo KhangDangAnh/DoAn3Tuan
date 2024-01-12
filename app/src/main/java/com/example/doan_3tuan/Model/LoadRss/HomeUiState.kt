@@ -1,4 +1,4 @@
-package com.example.doan_3tuan.ViewModel.BVviewModel
+package com.example.doan_3tuan.Model.LoadRss
 
 import androidx.compose.runtime.Immutable
 

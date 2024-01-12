@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.View.Screen.Chitiet_Screen
 import com.example.doan_3tuan.View.Screen.TrangChuScreen
@@ -16,9 +17,10 @@ fun RootGraph(navHostController: NavHostController)
        {
            TrangChuScreen(navCotroller = navHostController)
        }
-       composable(NavRoot.chitiet.root)
+       composable(NavRoot.chitiet.root + "?link={link}", arguments = listOf(navArgument("link"){nullable = true}))
        {
-           Chitiet_Screen(navHostController)
+           val url = it.arguments?.getString("link")
+           Chitiet_Screen(navHostController,url?:"")
        }
    }
 }

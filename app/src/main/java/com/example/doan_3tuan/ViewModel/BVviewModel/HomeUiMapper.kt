@@ -27,7 +27,6 @@ class HomeUiMapper {
             val result2= result1.substring(position,position2)
             val position3 = result2.indexOf(substring)
             val result3 = result2.substring(position3)
-
             Baiviet(
                 title = baiviet.title.orEmpty(),
                 description = Html.fromHtml(baiviet.description, Html.FROM_HTML_MODE_COMPACT).toString(),
