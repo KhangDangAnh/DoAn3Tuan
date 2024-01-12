@@ -412,7 +412,31 @@ fun DieuKhoanWithDialog() {
         AlertDialog(
             onDismissRequest = { showDialog2 = false },
             title = { Text("Điều khoản sử dụng") },
-            text = { Text("") },
+            text = {
+                LazyColumn {
+                    item {
+                        Text("Điều khoản sử dụng ứng dụng Báo360", fontWeight = FontWeight.Bold)
+                        Text("Chào mừng bạn đến với ứng dụng đọc báo của chúng tôi! Trước khi bạn bắt đầu sử dụng ứng dụng, vui lòng đọc và hiểu rõ những điều khoản sau đây:")
+                        Text("1. Tài khoản Người dùng:")
+                        Text("Bạn cần phải đăng ký một tài khoản để sử dụng đầy đủ tính năng của ứng dụng.")
+                        Text("Bảo mật thông tin tài khoản là trách nhiệm của bạn. Không chia sẻ thông tin đăng nhập với người khác.")
+                        Text("2. Nội dung:")
+                        Text("Các bài báo, hình ảnh, và nội dung khác trên ứng dụng là tài sản của chúng tôi hoặc các đối tác cấp phép.")
+                        Text("Bạn cam kết không sao chép, phát tán, hoặc sử dụng mục đích thương mại nội dung mà không có sự cho phép.")
+                        Text("3. Bản quyền:")
+                        Text("Tất cả các quyền sở hữu trí tuệ đều thuộc sở hữu của chúng tôi hoặc bên cấp phép. Sử dụng ứng dụng này không đồng nghĩa với việc bạn có quyền sở hữu bất kỳ nội dung nào từ ứng dụng.")
+                        Text("4. Bảo mật và Quyền riêng tư: ")
+                        Text("Chúng tôi cam kết bảo vệ thông tin cá nhân của bạn theo quy định của chính sách quyền riêng tư.")
+                        Text("Bạn có thể xem chi tiết về cách chúng tôi thu thập, lưu trữ và sử dụng thông tin trong Chính Sách Quyền Riêng Tư của chúng tôi.")
+                        Text("5. Tương tác Người dùng: ")
+                        Text("Chúng tôi khuyến khích sự tương tác tích cực từ người dùng. Tuy nhiên, chúng tôi có quyền loại bỏ bất kỳ nội dung không phù hợp hoặc vi phạm quy định này.")
+                        Text("6. Cập nhật ứng dụng: ")
+                        Text("Để đảm bảo trải nghiệm tốt nhất, bạn cần cập nhật ứng dụng đến phiên bản mới nhất khi có sẵn.")
+                        Text("Bằng cách sử dụng ứng dụng của chúng tôi, bạn đồng ý tuân theo những điều khoản và điều kiện này. Chúng tôi có quyền thay đổi điều khoản mà không cần thông báo trước. Hãy kiểm tra định kỳ để cập nhật với những thay đổi mới.")
+                        Text("Cảm ơn bạn đã sử dụng ứng dụng đọc báo của chúng tôi!")
+                    }
+                }
+            },
             confirmButton = {
                 TextButton(onClick = { showDialog2 = false }) {
                     Text(text = "OK")
