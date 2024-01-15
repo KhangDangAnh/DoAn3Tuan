@@ -1,4 +1,4 @@
-package com.example.doan_3tuan.View
+package com.example.doan_3tuan.ViewModel
 
 import android.content.Context
 import android.widget.Toast
@@ -9,7 +9,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,19 +16,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.doan_3tuan.MainActivity
 import com.example.doan_3tuan.View.Login.ForgotPasswordScreen
 import com.example.doan_3tuan.View.Login.LoginScreen
 import com.example.doan_3tuan.View.Login.RegisterScreen
-import com.example.doan_3tuan.ViewModel.GoogleAuthUiClient
-import com.example.doan_3tuan.ViewModel.SignInGoogleViewModel
-import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
 
-sealed class Screen(val route :String) {
-    object Login :Screen("Login_Screen")
-    object Register :Screen("Register_Screen")
-    object ForgotPassword : Screen("ForgotPassword_Screen")
+sealed class Screens(val route :String) {
+    object Login : Screens("Login_Screen")
+    object Register : Screens("Register_Screen")
+    object ForgotPassword : Screens("ForgotPassword_Screen")
+    object ProfileScreen: Screens("Profile_Screen")
 }
 
 @Composable
@@ -40,8 +36,8 @@ fun NavGraph(
     context: Context
 ) {
 
-    NavHost(navController = navController, startDestination = Screen.Login.route){
-        composable(Screen.Login.route){
+    NavHost(navController = navController, startDestination = Screens.Login.route){
+        composable(Screens.Login.route){
             val viewModel =viewModel<SignInGoogleViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -65,7 +61,7 @@ fun NavGraph(
                         "Sign In successful",
                         Toast.LENGTH_LONG
                     ).show()
-                    navController.navigate(Screen.ForgotPassword.route)
+                    navController.navigate(Screens.ForgotPassword.route)
                 }
             }
             LoginScreen(
@@ -83,11 +79,14 @@ fun NavGraph(
                 }
             )
         }
-        composable(Screen.Register.route){
+        composable(Screens.Register.route){
             RegisterScreen(navController)
         }
-        composable(Screen.ForgotPassword.route){
+        composable(Screens.ForgotPassword.route){
             ForgotPasswordScreen(navController)
+        }
+        composable(Screens.ProfileScreen.route){
+
         }
     }
 }

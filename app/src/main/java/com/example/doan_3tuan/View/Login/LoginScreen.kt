@@ -1,9 +1,5 @@
 package com.example.doan_3tuan.View.Login
 
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 
@@ -22,7 +18,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 
 import androidx.compose.material3.OutlinedTextField
@@ -33,7 +28,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,8 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -54,8 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.doan_3tuan.Model.SignInState
-import com.example.doan_3tuan.R
-import com.example.doan_3tuan.View.Screen
+import com.example.doan_3tuan.ViewModel.Screens
 import com.example.doan_3tuan.ViewModel.AccountViewModel
 import com.example.doan_3tuan.ViewModel.DialogSample
 
@@ -164,7 +155,7 @@ fun LoginScreen(
                         onClick = {
                             viewModel.SignIn()
                             if(state.success){
-                                navController.navigate(Screen.ForgotPassword.route)
+                                navController.navigate(Screens.ForgotPassword.route)
                             }
                         }) {
                         Text(text="Đăng Nhập", fontSize = 22.sp, fontWeight = FontWeight.Light)
@@ -184,7 +175,7 @@ fun LoginScreen(
                     TextButton(
                         modifier = Modifier.height(30.dp),
                         onClick = {
-                            navController.navigate(Screen.ForgotPassword.route)
+                            navController.navigate(Screens.ForgotPassword.route)
 
                         }
                     ) {
@@ -202,7 +193,7 @@ fun LoginScreen(
                     TextButton(
                         modifier = Modifier.height(30.dp),
                         onClick = {
-                            navController.navigate(Screen.Register.route)
+                            navController.navigate(Screens.Register.route)
                         }
                     ) {
                         Text(
@@ -215,6 +206,7 @@ fun LoginScreen(
             }
         }
     }
+    //Xử lý thông báo
     if (openDialog) {
         var text= ""
         if (idDialog == 1) {
