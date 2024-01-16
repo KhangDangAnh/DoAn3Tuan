@@ -1,51 +1,52 @@
 [
   {
-    "title": "Vui vẻ mùa HALLOWEEN",
-    "videoURL": "https://pic.pikbest.com/19/81/51/106888piCr84.mp4"
+    "id": 1,
+    "video": "lake.mp4",
+    "userImage": "https://generated.photos/vue-static/home/hero/4.png",
+    "userName": "Farhan Roy",
+    "isLiked": true,
+    "likesCount": 778,
+    "commentsCount": 156,
+    "comment": "Wkwkwk..."
   },
   {
-    "title": "Công nghệ Robot hài hước",
-    "videoURL": "https://pic.pikbest.com/00/45/75/52c888piCUCz.mp4"
+    "id": 2,
+    "video": "food.mp4",
+    "userImage": "https://generated.photos/vue-static/home/hero/7.png",
+    "userName": "Muhammad Ali",
+    "isLiked": true,
+    "likesCount": 5923,
+    "commentsCount": 11,
+    "comment": "Awas kamu ya klo pergi"
   },
   {
-    "title": "MEME chú mèo nhảy nhót hài hước",
-    "videoURL": "https://img.pikbest.com/10/04/40/28cpIkbEsTaWS.mp4"
+    "id": 3,
+    "video": "icecream.mp4",
+    "userImage": "https://generated.photos/vue-static/home/hero/3.png",
+    "userName": "Christian Juned",
+    "isLiked": true,
+    "likesCount": 2314,
+    "comment": "Es krim dingin sedapp",
+    "commentsCount": 200
   },
   {
-    "title": "Phụ đề bài hát hài hước cá tính",
-    "videoURL": "https://pic.pikbest.com/17/86/72/70k888piC4Cu.mp4"
+    "id": 4,
+    "video": "soap-bubbles.mp4",
+    "userImage": "https://generated.photos/vue-static/home/hero/6.png",
+    "userName": "Cak Jhon",
+    "isLiked": true,
+    "likesCount": 786,
+    "comment": "Ados slurr",
+    "commentsCount": 700
   },
   {
-    "title": "Phim Hoạt Hình Hài Hước Ngày Của Cha đồ họa ",
-    "videoURL": "https://pic.pikbest.com/19/87/36/75U888piCWzv.mp4"
-  },
-  {
-    "title": "Phim Hoạt Hình Hài Hước Ngày Tháng Tư ",
-    "videoURL": "https://pic.pikbest.com/19/85/24/33U888piCTGw.mp4"
-  },
-  {
-    "title": "Khoa Học Và Công Nghệ Tươi Sáng Bầu Không Khí Công Ty Khai Mạc",
-    "videoURL": "https://pic.pikbest.com/19/65/55/819888piCsJR.mp4"
-  },
-  {
-    "title": "Video Nền LED ánh Sáng Siêu Chói",
-    "videoURL": "https://pic.pikbest.com/00/55/25/15t888piCe4b.mp4"
-  },
-  {
-    "title": "Cây rừng tuyết",
-    "videoURL": "https://cdn.pixabay.com/vimeo/892475199/cay-192357.mp4?width=1280&hash=4fab2d33639ff56b135bb020fef9969b29b98e22"
-  },
-  {
-    "title": "Chú mèo dễ thương",
-    "videoURL": "https://cdn.pixabay.com/vimeo/166221773/con-meo-de-thuong-3092.mp4?width=640&hash=f94a17cb88348e5ab26de11948158ae2dba10a71"
-  },
-  {
-    "title": "Mèo méo meo hài hước ",
-    "videoURL": "https://cdn.pixabay.com/vimeo/703067918/meo-115072.mp4?width=640&hash=0469798f6310ca3ead17da4efc82af22ce78bbb4"
-  },
-  {
-    "title": "Thiên nhiên hùng vĩ ",
-    "videoURL": "https://cdn.pixabay.com/vimeo/407701687/canh-quan-35699.mp4?width=1280&hash=6ecc93058cf962e43e380cdca28f0154c5e7f321"
+    "id": 5,
+    "video": "castle.mp4",
+    "userImage": "https://generated.photos/vue-static/home/hero/2.png",
+    "userName": "David Dulkader",
+    "isLiked": true,
+    "likesCount": 1890,
+    "comment": "Kerjaan di tengah hutan",
+    "commentsCount": 232
   }
-
 ]

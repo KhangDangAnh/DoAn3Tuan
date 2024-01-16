@@ -6,10 +6,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.doan_3tuan.Model.NavRoot
+import com.example.doan_3tuan.View.Screen.CareTrendingScreen
 import com.example.doan_3tuan.View.Screen.Chitiet_Screen
+import com.example.doan_3tuan.View.Screen.FaviritoTrendingScreen
 import com.example.doan_3tuan.View.Screen.TrangChuScreen
+import com.example.doan_3tuan.View.Screen.TrendingScreen
+import com.example.doan_3tuan.View.Screen.VideoScreen
+
 @Composable
-fun RootGraph(navHostController: NavHostController)
+fun RootGraph(navHostController: NavHostController,viewModelNotification :NotificationViewModel,viewModelTrendingViewModel : TrendingViewModel)
 {
    NavHost(navController = navHostController, startDestination = NavRoot.trangchu.root)
    {
@@ -21,6 +26,18 @@ fun RootGraph(navHostController: NavHostController)
        {
            val url = it.arguments?.getString("link")
            Chitiet_Screen(navHostController,url?:"")
+       }
+       composable(NavRoot.xuhuong.root){
+           TrendingScreen(viewModelTrendingViewModel)
+       }
+       composable(NavRoot.xuhuongquantam.root){
+           CareTrendingScreen(viewModel = viewModelTrendingViewModel)
+       }
+       composable(NavRoot.xuhuongyeuthich.root){
+           FaviritoTrendingScreen(viewModel = viewModelTrendingViewModel)
+       }
+       composable(NavRoot.video.root){
+           VideoScreen()
        }
    }
 }

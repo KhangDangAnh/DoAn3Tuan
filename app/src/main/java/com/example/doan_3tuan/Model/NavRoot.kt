@@ -6,4 +6,7 @@ sealed class NavRoot(val root: String)
     object trangchu : NavRoot("trangchu")
     object xuhuong : NavRoot("xuhuong")
     object tienich : NavRoot("tienich")
+    object video:NavRoot("video")
+    object xuhuongquantam:NavRoot("xuhuongquantam")
+    object xuhuongyeuthich:NavRoot("xuhuongyeuthich")
 }

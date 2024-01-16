@@ -55,6 +55,9 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation ("io.coil-kt:coil-gif:2.1.0")
+    implementation("androidx.navigation:navigation-compose:2.7.5")
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 
 //    implementation("com.google.dagger:hilt-android:2.44")
 //    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
