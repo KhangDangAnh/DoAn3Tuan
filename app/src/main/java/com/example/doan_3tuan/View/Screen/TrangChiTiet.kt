@@ -50,10 +50,6 @@ import com.example.doan_3tuan.ViewModel.BVviewModel.HomeViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
-    var backEnable by remember {
-        mutableStateOf(false)
-    }
-    var webView : WebView? = null
     val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     val homeState = viewModel.uiState.collectAsStateWithLifecycle()
     val state = homeState.value
@@ -65,25 +61,13 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
         }
 
         is UiResult.Success -> {
-            val data = state.data
-            //val linkurl = "https://thanhnien.vn/sap-khai-thong-doan-duong-thuong-xuyen-ket-xe-sat-nui-ba-hoa-o-tpquy-nhon-185240112150211598.htm"
-            val news = listOf(
-                kotlin.Pair(R.drawable.img, "News"),
-                kotlin.Pair(R.drawable.img, "News"),
-                kotlin.Pair(R.drawable.img, "News"),
-                kotlin.Pair(R.drawable.img, "News"),
-                kotlin.Pair(R.drawable.img, "News"),
-                kotlin.Pair(R.drawable.img, "News"),
-                kotlin.Pair(R.drawable.img, "News"),
-                kotlin.Pair(R.drawable.img, "News")
-            )
             var color = 0xFF07899B
             Scaffold(
                 topBar = {
                     TopAppBar(
                         title = { Text(text = "") },
                         navigationIcon = {
-                            IconButton(onClick = {  webView?.goBack();navController.popBackStack()}) {
+                            IconButton(onClick = {  navController.popBackStack()}) {
                                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
                             }
                         },
@@ -109,6 +93,10 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
                     verticalArrangement = Arrangement.Center
                 ) {
                     item {
+                        var back by remember {
+                            mutableStateOf(false)
+                        }
+                        var webView: WebView? = null
                         AndroidView(modifier = Modifier.fillMaxWidth(),factory = {
                             WebView(it).apply {
                                 webViewClient =object : WebViewClient(){
@@ -116,10 +104,9 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
                                         view: WebView,
                                         url: String?,
                                         favicon: Bitmap?
-                                    ) {
-                                        backEnable = view.canGoBack()
-                                    }
+                                    ){}
                                 }
+                                settings.javaScriptEnabled = true
                                 loadUrl(linkurl)
                                 webView = this
                             }
