@@ -1,5 +1,6 @@
 package com.example.doan_3tuan.View.Screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -54,7 +55,7 @@ fun NotificationScreen(viewModel: NotificationViewModel) {
                     title = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Notification",
+                            text = "Thông báo",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.ExtraBold
                         )
@@ -78,7 +79,9 @@ fun NotificationScreen(viewModel: NotificationViewModel) {
             }
         }
     ) { paddingValues ->
-        LazyColumn(modifier = Modifier.padding(paddingValues)) {
+        LazyColumn(modifier = Modifier
+            .padding(paddingValues)
+            .background(Color(0xFFCBEBF7))) {
             items(notifications) {
                 NotificationCard(notification = it)
             }
@@ -95,11 +98,16 @@ fun NotificationCard(notification: Notification) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp, 0.dp),
+                .padding()
+                .background(Color(0x5E015A5A)),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(model = notification.imageURL, contentDescription = null,modifier =Modifier.size(60.dp).clip(
-                CircleShape))
+            Spacer(modifier = Modifier.width(10.dp))
+            AsyncImage(model = notification.imageURL, contentDescription = null,modifier = Modifier
+                .size(60.dp)
+                .clip(
+                    CircleShape
+                ))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 //    id("kotlin-kapt")
 //    id("com.google.dagger.hilt.android")
 }
@@ -53,21 +54,15 @@ android {
 
 dependencies {
 
+    implementation("com.google.android.exoplayer:exoplayer-core:2.19.1")
+    implementation("com.google.android.exoplayer:exoplayer-ui:2.19.1")
+
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation ("io.coil-kt:coil-gif:2.1.0")
     implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 
-//    implementation("com.google.dagger:hilt-android:2.44")
-//    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-//    kapt("com.google.dagger:hilt-android-compiler:2.44")
-//    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-//    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-//
-//    implementation("androidx.media3:media3-exoplayer:1.2.0")
-//    implementation("androidx.media3:media3-exoplayer-dash:1.2.0")
-//    implementation("androidx.media3:media3-ui:1.2.0")
 
     implementation("com.google.android.exoplayer:exoplayer:2.15.0")
     implementation("com.github.skydoves:landscapist-glide:1.3.1")
@@ -119,10 +114,10 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:2.3.6")
     implementation("io.ktor:ktor-client-android:2.3.6")
     implementation("com.github.ivanisidrowu.KtRssReader:kotlin:v2.2.1")
+    implementation("com.google.firebase:firebase-firestore:24.10.0")
+    implementation("com.google.firebase:firebase-database:20.3.0")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
-//kapt {
-//    correctErrorTypes = true
-//}

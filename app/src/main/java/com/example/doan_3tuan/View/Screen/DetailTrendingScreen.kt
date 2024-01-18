@@ -68,7 +68,7 @@ fun CareTrendingScreen(viewModel: TrendingViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FaviritoTrendingScreen(viewModel: TrendingViewModel) {
+fun FavoutiteTrendingScreen(viewModel: TrendingViewModel) {
     val trending by remember {
         mutableStateOf(viewModel.getTrending())
     }

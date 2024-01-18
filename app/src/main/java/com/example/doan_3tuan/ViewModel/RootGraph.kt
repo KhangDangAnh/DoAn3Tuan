@@ -8,7 +8,7 @@ import androidx.navigation.navArgument
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.View.Screen.CareTrendingScreen
 import com.example.doan_3tuan.View.Screen.Chitiet_Screen
-import com.example.doan_3tuan.View.Screen.FaviritoTrendingScreen
+import com.example.doan_3tuan.View.Screen.FavoutiteTrendingScreen
 import com.example.doan_3tuan.View.Screen.TrangChuScreen
 import com.example.doan_3tuan.View.Screen.TrendingScreen
 import com.example.doan_3tuan.View.Screen.VideoScreen
@@ -28,13 +28,13 @@ fun RootGraph(navHostController: NavHostController,viewModelNotification :Notifi
            Chitiet_Screen(navHostController,url?:"")
        }
        composable(NavRoot.xuhuong.root){
-           TrendingScreen(viewModelTrendingViewModel)
+           TrendingScreen(viewModelTrendingViewModel,navHostController)
        }
        composable(NavRoot.xuhuongquantam.root){
            CareTrendingScreen(viewModel = viewModelTrendingViewModel)
        }
        composable(NavRoot.xuhuongyeuthich.root){
-           FaviritoTrendingScreen(viewModel = viewModelTrendingViewModel)
+           FavoutiteTrendingScreen(viewModel = viewModelTrendingViewModel)
        }
        composable(NavRoot.video.root){
            VideoScreen()

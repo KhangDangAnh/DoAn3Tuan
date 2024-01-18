@@ -1,11 +1,13 @@
 package com.example.doan_3tuan.View.Screen
 
 
+import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -20,33 +22,53 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.doan_3tuan.Model.LoadRss.ktorClient
+import com.example.doan_3tuan.Model.VideoFirestore
 import com.example.doan_3tuan.R
 import com.example.doan_3tuan.Video
 import com.example.doan_3tuan.VideoData
 import com.example.doan_3tuan.ViewModel.VideoPlayer
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 
 val verticalPadding = 12.dp
 val horizontalPadding = 10.dp
+
 
 @Composable
 fun VideoScreen() {
@@ -55,6 +77,30 @@ fun VideoScreen() {
         VideoHeader()
     }
 }
+//@Composable
+//fun MainScreen() {
+//    val context = LocalContext.current
+//    val url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+//    val exoPlayer = ExoPlayer.Builder(context).build()
+//    val mediaItem = MediaItem.fromUri(Uri.parse(url))
+//    exoPlayer.setMediaItem(mediaItem)
+//
+//
+//    val playerView = StyledPlayerView(context)
+//    playerView.player = exoPlayer
+//
+//    DisposableEffect(AndroidView(factory = {playerView})){
+//
+//        exoPlayer.prepare()
+//        exoPlayer.playWhenReady= true
+//
+//        onDispose {
+//            exoPlayer.release()
+//        }
+//    }
+//
+//
+//}
 
 @Composable
 fun VideoHeader() {
@@ -67,7 +113,7 @@ fun VideoHeader() {
             ),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text("VideoScreen", color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 21.sp)
+        Text("Đoạn Phim", color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 21.sp)
         Icon(
             bitmap = ImageBitmap.imageResource(id = R.drawable.ic_outlined_camera),
             tint = Color.White,
@@ -76,6 +122,7 @@ fun VideoHeader() {
         )
     }
 }
+
 
 @Composable
 fun VideoList() {
@@ -119,6 +166,7 @@ fun FooterUserAction(video: Video, modifier: Modifier) {
     var likecount by remember {
         mutableStateOf(video.likesCount)
     }
+    var context = LocalContext.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -127,6 +175,11 @@ fun FooterUserAction(video: Video, modifier: Modifier) {
             onClick = {
                 likecount += if(isLiked) -1 else 1
                 isLiked = !isLiked
+                if(isLiked){
+                    Toast.makeText(context,"Bạn đã hủy like",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"Bạn đã like",Toast.LENGTH_SHORT).show()
+                }
             }
             )
         {

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import com.example.doan_3tuan.View.Screen.NotificationScreen
 import com.example.doan_3tuan.View.Screen.TrangChuScreen
+import com.example.doan_3tuan.View.Screen.TrendingScreen
 import com.example.doan_3tuan.View.Screen.VideoScreen
 import com.example.doan_3tuan.ViewModel.NotificationViewModel
 import com.example.doan_3tuan.ViewModel.TrendingViewModel
@@ -20,8 +21,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             Doan_3tuanTheme {
                 var navController = rememberNavController()
-                //VideoScreen()
-                NotificationScreen(viewModel = viewModelNotification)
+                //MainScreen()
+                VideoScreen()
+                //NotificationScreen(viewModel = viewModelNotification)
+                //TrendingScreen(viewModel = viewModelTrending,navController)
             }
         }
     }

@@ -1,28 +1,24 @@
 package com.example.doan_3tuan.ViewModel
 
-import android.content.Context
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.doan_3tuan.Model.Trending
-import com.example.doan_3tuan.Model.Video
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.io.BufferedReader
+import com.example.doan_3tuan.Video
+import com.google.firebase.storage.FirebaseStorage
 
-class VideoViewModel(private val context: Context) : ViewModel() {
-    private var video: List<Video> = emptyList()
-    fun getVideo(): List<Video> {
-        if (video.isEmpty()) {
-            val json = readJsonFromFile(context, "video.json")
-            val type = object : TypeToken<List<Trending>>() {}.type
-            video = Gson().fromJson(json, type)
-        }
-        return video
-    }
-
-    fun readJsonFromFile(context: Context, filename: String): String {
-        val inputStream = context.assets.open(filename)
-        val bufferedReader = BufferedReader(inputStream.reader())
-        return bufferedReader.use { it.readText() }
-    }
-
-}
+//class VideoViewModel : ViewModel() {
+//    private val storage = FirebaseStorage.getInstance()
+//    private val storageReference = storage.reference.child("videos")
+//
+//    private val _videos = mutableStateOf<List<Video>>(emptyList())
+//    val videos: State<List<Video>> = _videos
+//
+//    init {
+//        storageReference.listAll().addOnSuccessListener { result ->
+//            val videoList = result.items.map { Video(it.downloadUrl.toString()) }
+//            _videos.value = videoList
+//        }.addOnFailureListener {
+//            emptyList<Video>()
+//        }
+//    }
+//}

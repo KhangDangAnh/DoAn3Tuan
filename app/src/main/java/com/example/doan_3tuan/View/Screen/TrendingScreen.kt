@@ -36,13 +36,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.Model.Trending
 import com.example.doan_3tuan.ViewModel.TrendingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TrendingScreen(viewModel: TrendingViewModel) {
+fun TrendingScreen(viewModel: TrendingViewModel,navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -60,20 +63,20 @@ fun TrendingScreen(viewModel: TrendingViewModel) {
         LazyColumn(
             Modifier
                 .padding(it)
-                .background(Color.White)
+                .background(Color(0xFFCBEBF7))
                 .fillMaxSize()){
-            item { ListTrending(title = "Được quan tâm nhiều", viewModel = viewModel) }
-            item { ListTrending(title = "Được yêu thích nhiều", viewModel = viewModel) }
+            item { ListCareTrending(title = "Được quan tâm nhiều", viewModel = viewModel, navController = navController) }
+            item { ListFavouriteTrending(title = "Được yêu thích nhiều", viewModel = viewModel,navController = navController) }
         }
     }
 }
 
 @Composable
-fun ListTrending(title:String, viewModel: TrendingViewModel){
+fun ListCareTrending(title:String, viewModel: TrendingViewModel,navController: NavHostController){
     var trending by remember {
         mutableStateOf(viewModel.getTrending())
     }
-    Column() {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Row {
             Icon(imageVector = Icons.Default.Star, contentDescription = null, tint = Color.Yellow)
             Text(text = title, color = Color.Blue)
@@ -89,8 +92,41 @@ fun ListTrending(title:String, viewModel: TrendingViewModel){
                 TrendingCard(trending = it)
             }
         }
-        TextButton(onClick = {  }) {
-            Text(text = "Đọc thêm", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+        TextButton(onClick = { navController.navigate(NavRoot.xuhuongquantam.root) }) {
+            Text(
+                text = "Đọc thêm",
+                color =Color.Black,
+            )
+        }
+        Spacer(modifier = Modifier.height(5.dp))
+    }
+}
+@Composable
+fun ListFavouriteTrending(title:String, viewModel: TrendingViewModel,navController: NavHostController){
+    var trending by remember {
+        mutableStateOf(viewModel.getTrending())
+    }
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Row {
+            Icon(imageVector = Icons.Default.Star, contentDescription = null, tint = Color.Yellow)
+            Text(text = title, color = Color.Blue)
+        }
+        LazyColumn(
+            Modifier
+                .height(450.dp)
+                .padding(15.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            items(trending){
+                TrendingCard(trending = it)
+            }
+        }
+        TextButton(onClick = { navController.navigate(NavRoot.xuhuongquantam.root) }) {
+            Text(
+                text = "Đọc thêm",
+                color =Color.Black,
+            )
         }
         Spacer(modifier = Modifier.height(5.dp))
     }
@@ -102,7 +138,7 @@ fun TrendingCard(trending: Trending){
             .fillMaxWidth()
             .height(150.dp)
             .padding(1.dp),
-        colors = CardDefaults.cardColors(Color.LightGray)
+        colors = CardDefaults.cardColors(Color(0x5E015A5A))
     ) {
         Row(
             modifier = Modifier

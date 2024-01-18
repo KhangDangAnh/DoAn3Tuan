@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.doan_3tuan.ViewModel
 
 
@@ -18,7 +20,6 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-
 @Composable
 fun VideoPlayer(uri: Uri) {
     val context = LocalContext.current
@@ -32,7 +33,7 @@ fun VideoPlayer(uri: Uri) {
                     Util.getUserAgent(context, context.packageName)
                 )
 
-                val source = ProgressiveMediaSource.Factory(dataSourceFactory)
+                var source = ProgressiveMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(uri)
 
                 this.prepare(source)
@@ -56,3 +57,4 @@ fun VideoPlayer(uri: Uri) {
         onDispose { exoPlayer.release() }
     }
 }
+
