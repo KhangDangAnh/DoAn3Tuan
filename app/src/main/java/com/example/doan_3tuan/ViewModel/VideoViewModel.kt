@@ -1,24 +1,68 @@
 package com.example.doan_3tuan.ViewModel
 
-import androidx.compose.runtime.State
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.doan_3tuan.Video
-import com.google.firebase.storage.FirebaseStorage
+import androidx.lifecycle.viewModelScope
+import com.example.doan_3tuan.Model.VideoFirestore
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-//class VideoViewModel : ViewModel() {
-//    private val storage = FirebaseStorage.getInstance()
-//    private val storageReference = storage.reference.child("videos")
-//
-//    private val _videos = mutableStateOf<List<Video>>(emptyList())
-//    val videos: State<List<Video>> = _videos
-//
+
+
+class VideoViewModel:ViewModel(){
+    val state = mutableStateOf(VideoFirestore(id = 0, videoURL = "", userName = "", userImage = "", music = "", likesCount = 0, isLiked = false, commentsCount = 0, comment = ""))
+
+    init {
+        getVideo()
+    }
+    private fun getVideo(){
+        viewModelScope.launch {
+            state.value = getVideoFromFirestore()
+        }
+    }
+}
+suspend fun getVideoFromFirestore():VideoFirestore{
+    val db = FirebaseFirestore.getInstance()
+    var video = VideoFirestore(id = 0, videoURL = "", userName = "", userImage = "", music = "", likesCount = 0, isLiked = false, commentsCount = 0, comment = "")
+    try {
+        db.collection("videos").get().await().map {
+            val result = it.toObject(VideoFirestore::class.java)
+            video = result
+        }
+    }catch (e:FirebaseFirestoreException){
+        Log.d("error","getVideoFromFirestore: $e")
+    }
+    return  video
+}
+//class VideoViewModel:ViewModel() {
+//    var state by mutableStateOf(VideoState())
+//        private set
 //    init {
-//        storageReference.listAll().addOnSuccessListener { result ->
-//            val videoList = result.items.map { Video(it.downloadUrl.toString()) }
-//            _videos.value = videoList
-//        }.addOnFailureListener {
-//            emptyList<Video>()
-//        }
+//        getAllContact()
+//    }
+//
+//    fun getAllContact(){
+//        viewModelScope.launch {
+//            var ls = mutableListOf<VideoFirestore>()
+//                Firebase.firestore.collection("videos")
+//                    .addSnapshotListener { value, error ->
+//                        if(value != null){
+//                            for(doc in value){
+//                                var video = doc.toObject(VideoFirestore::class.java)
+//                                ls.add(video)
+//                            }
+//                        }
+//                        state = state.copy(
+//                            contactList = ls
+//                        )
+//                    }
+//            }
 //    }
 //}
+//
+//data class VideoState(
+//    val contactList: List<VideoFirestore> = emptyList()
+//)

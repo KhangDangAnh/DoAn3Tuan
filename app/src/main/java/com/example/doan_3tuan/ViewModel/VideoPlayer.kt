@@ -2,7 +2,6 @@
 
 package com.example.doan_3tuan.ViewModel
 
-
 import android.net.Uri
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
@@ -12,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -20,6 +20,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
+
 @Composable
 fun VideoPlayer(uri: Uri) {
     val context = LocalContext.current
@@ -32,9 +33,9 @@ fun VideoPlayer(uri: Uri) {
                     context,
                     Util.getUserAgent(context, context.packageName)
                 )
-
-                var source = ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(uri)
+                val mediaItem = MediaItem.fromUri(uri)
+                val source = ProgressiveMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(mediaItem)
 
                 this.prepare(source)
             }
@@ -57,4 +58,3 @@ fun VideoPlayer(uri: Uri) {
         onDispose { exoPlayer.release() }
     }
 }
-

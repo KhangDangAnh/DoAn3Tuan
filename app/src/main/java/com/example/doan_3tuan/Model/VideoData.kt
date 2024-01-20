@@ -1,9 +1,9 @@
-package com.example.doan_3tuan
+package com.example.doan_3tuan.Model
 
 import android.net.Uri
 
 object VideoData {
-    val videos = listOf<Video>(
+    var videos = listOf<Video>(
         Video(
             id = 1,
             video = "cachcony.mp4",
@@ -28,7 +28,7 @@ object VideoData {
         ),
         Video(
             id = 3,
-            video = "Food.mp4",
+            video = "food.mp4",
             userImage = "https://generated.photos/vue-static/home/hero/3.png",
             userName = "Christian Juned",
             isLiked = false,
@@ -118,10 +118,7 @@ data class Video(
     val music:String
 ) {
 
-
     fun getVideoUrl(): Uri {
-
         return Uri.parse("asset:///${video}")
     }
-
 }

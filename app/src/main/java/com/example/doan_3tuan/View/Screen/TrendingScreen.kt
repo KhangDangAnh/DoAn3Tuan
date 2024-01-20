@@ -41,6 +41,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.Model.Trending
+import com.example.doan_3tuan.View.Component.TrendingCard
 import com.example.doan_3tuan.ViewModel.TrendingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -129,49 +130,6 @@ fun ListFavouriteTrending(title:String, viewModel: TrendingViewModel,navControll
             )
         }
         Spacer(modifier = Modifier.height(5.dp))
-    }
-}
-@Composable
-fun TrendingCard(trending: Trending){
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(150.dp)
-            .padding(1.dp),
-        colors = CardDefaults.cardColors(Color(0x5E015A5A))
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(2.dp, 0.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AsyncImage(model = trending.imageURL, contentDescription = null,modifier = Modifier
-                .size(200.dp))
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(2.dp)
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
-
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = if (trending.title.length > 25)
-                            trending.title.substring(0, 25)+"..."
-                        else trending.title, fontSize = 20.sp
-                    )
-                }
-                Text(
-                    text = trending.time,
-                    fontSize = 12.sp,
-                    color = Color.Gray
-                )
-            }
-        }
     }
 }
 
