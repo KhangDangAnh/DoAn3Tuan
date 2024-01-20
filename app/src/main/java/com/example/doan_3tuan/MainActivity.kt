@@ -8,10 +8,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.example.doan_3tuan.ViewModel.AccountViewModel
 import com.example.doan_3tuan.ViewModel.NavGraph
 import com.example.doan_3tuan.ViewModel.GoogleAuthUiClient
 import com.example.doan_3tuan.ui.theme.Doan_3tuanTheme
 import com.google.android.gms.auth.api.identity.Identity
+import com.google.firebase.firestore.auth.User
 
 class MainActivity : ComponentActivity() {
     internal val googleAuthUiClient by lazy {
@@ -20,6 +22,7 @@ class MainActivity : ComponentActivity() {
             oneTapClient = Identity.getSignInClient(applicationContext)
         )
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,7 +35,7 @@ class MainActivity : ComponentActivity() {
                         navController = navcontroller,
                         lifecycleOwner = this,
                         googleAuthUiClient = googleAuthUiClient,
-                        context = applicationContext
+                        context = applicationContext,
                     )
                 }
             }

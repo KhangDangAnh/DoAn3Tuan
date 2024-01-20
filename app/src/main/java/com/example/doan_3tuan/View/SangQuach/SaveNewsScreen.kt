@@ -24,10 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SaveNewsScreen(){
+fun SaveNewsScreen(
+    navController: NavHostController
+){
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -56,7 +59,7 @@ fun SaveNewsScreen(){
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = { /*Quay về*/ }
+                        onClick = { navController.popBackStack() }
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,

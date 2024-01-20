@@ -47,7 +47,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.doan_3tuan.ViewModel.Screens
 import com.example.doan_3tuan.ViewModel.AccountViewModel
-import com.example.doan_3tuan.ViewModel.DialogSample
+import com.example.doan_3tuan.ViewModel.DialogErrorLogin
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -228,13 +228,13 @@ fun RegisterScreen(
         }
     }
     if (openDialog) {
-        var text: String = ""
+        var text = ""
         if (idDialog == 1) {
             text = "Mời bạn nhập đầy đủ"
         } else if(idDialog == 2){
             text = "Mật khẩu không trùng khớp"
         }
-        DialogSample(
+        DialogErrorLogin(
             onDiss = {
                 openDialog = false
             },
