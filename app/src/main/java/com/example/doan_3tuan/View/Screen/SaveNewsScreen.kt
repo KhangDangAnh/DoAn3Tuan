@@ -97,7 +97,7 @@ fun SaveNewsScreen(navController: NavController,Id : String) {
         LazyColumn(Modifier.padding(it)){
             items(dataList)
             {
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = {  navController.navigate(NavRoot.chitiet.root + "?link=${it}") }) {
                     Text(text = it)
                 }
             }
