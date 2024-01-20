@@ -8,4 +8,6 @@ sealed class NavRoot(val root: String)
     object timkiem : NavRoot("timkiem")
     object xuhuong : NavRoot("xuhuong")
     object tienich : NavRoot("tienich")
+
+    object luunews : NavRoot("luunews")
 }

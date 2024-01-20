@@ -41,16 +41,19 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.doan_3tuan.Model.LoadRss.Baiviet
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.Model.UiResult
 import com.example.doan_3tuan.R
 import com.example.doan_3tuan.View.Component.Baiviet_Card
 import com.example.doan_3tuan.ViewModel.BVviewModel.HomeViewModel
+import com.example.doan_3tuan.ViewModel.SNViewModel.SaveNews
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
     val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    val saveVM : SaveNews = viewModel(modelClass = SaveNews::class.java)
     val homeState = viewModel.uiState.collectAsStateWithLifecycle()
     val state = homeState.value
     when (state) {
@@ -66,17 +69,12 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
                 topBar = {
                     TopAppBar(
                         title = { Text(text = "") },
-                        navigationIcon = {
-                            IconButton(onClick = {  navController.popBackStack()}) {
-                                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
-                            }
-                        },
                         colors = TopAppBarDefaults.topAppBarColors(Color(color))
                     )
                 },
                 bottomBar = {
                     BottomAppBar(actions = {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = { saveVM.setValueSaveNews(linkurl,"Id") }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_bookmark_24),
                                 contentDescription = ""

@@ -5,8 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.doan_3tuan.Model.LoadRss.Baiviet
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.View.Screen.Chitiet_Screen
+import com.example.doan_3tuan.View.Screen.SaveNewsScreen
 import com.example.doan_3tuan.View.Screen.TimKiemScreen
 import com.example.doan_3tuan.View.Screen.TrangChuScreen
 @Composable
@@ -26,6 +28,11 @@ fun RootGraph(navHostController: NavHostController)
        composable(NavRoot.timkiem.root)
        {
            TimKiemScreen(navController = navHostController)
+       }
+       composable(NavRoot.luunews.root + "?id={id}", arguments = listOf(navArgument("id"){nullable = true}))
+       {
+           val id = it.arguments?.getString("id")
+           SaveNewsScreen(navHostController,id?:"")
        }
    }
 }

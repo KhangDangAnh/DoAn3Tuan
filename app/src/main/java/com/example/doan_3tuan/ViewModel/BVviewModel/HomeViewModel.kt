@@ -43,19 +43,4 @@ class HomeViewModel : ViewModel() {
             }
         }
     }
-    private fun findBaiviet() {
-        viewModelScope.launch {
-            try {
-                val home = withContext(Dispatchers.IO) {
-                    val response = cloudService.getBaiviet()
-                    uiMapper.map(response)
-                }
-                _uiState.update {
-                    UiResult.Success(home)
-                }
-            } catch (err: Throwable) {
-                _uiState.update {UiResult.Fail(err) }
-            }
-        }
-    }
 }

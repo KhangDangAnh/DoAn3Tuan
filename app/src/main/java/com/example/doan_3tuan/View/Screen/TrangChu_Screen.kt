@@ -196,20 +196,23 @@ fun TrangChuScreen(navController: NavHostController) {
                         Text(text = "Công cụ", fontWeight = FontWeight.ExtraBold)
                         Divider(Modifier.padding(20.dp))
                         congcu.forEach { (tool, icon) ->
-                            NavigationDrawerItem(label = {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 10.dp, horizontal = 20.dp),
-                                )
-                                {
-                                    Icon(
-                                        painter = painterResource(icon),
-                                        contentDescription = ""
+                            NavigationDrawerItem(
+                                label = {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 10.dp, horizontal = 20.dp),
                                     )
-                                    Text(text = tool)
-                                }
-                            }, selected = false, onClick = { /*TODO*/ })
+                                    {
+                                        Icon(
+                                            painter = painterResource(icon),
+                                            contentDescription = ""
+                                        )
+                                        Text(text = tool)
+                                    }
+                                },
+                                selected = false,
+                                onClick = { navController.navigate(NavRoot.luunews.root + "?id=${1234}") })
                         }
                     }
                 }

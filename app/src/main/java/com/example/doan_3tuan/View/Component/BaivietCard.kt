@@ -43,7 +43,6 @@ fun Baiviet_Card(item: Baiviet, onItemClicked: (Baiviet) -> Unit) {
             )
             Text(text = item.title, modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp))
             Text(text = item.description.substring(1), modifier = Modifier.padding(16.dp))
-
         }
     }
 }
