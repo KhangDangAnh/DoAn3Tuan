@@ -1,9 +1,11 @@
 package com.example.doan_3tuan
 
 import android.net.Uri
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.doan_3tuan.ViewModel.VideoViewModel
 
 object VideoData {
-    val videos = listOf<Video>(
+    var videos = listOf<Video>(
         Video(
             id = 1,
             video = "cachcony.mp4",
@@ -118,10 +120,7 @@ data class Video(
     val music:String
 ) {
 
-
     fun getVideoUrl(): Uri {
-
         return Uri.parse("asset:///${video}")
     }
-
 }

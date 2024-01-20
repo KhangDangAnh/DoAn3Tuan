@@ -64,7 +64,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 
 
-    implementation("com.google.android.exoplayer:exoplayer:2.15.0")
+    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
     implementation("com.github.skydoves:landscapist-glide:1.3.1")
 
     implementation("androidx.core:core-ktx:1.10.1")
@@ -75,8 +75,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-//
-//    implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
+
     implementation("androidx.navigation:navigation-compose:2.7.4")
 //    implementation("androidx.room:room-compiler:2.6.1")
 //
@@ -92,8 +91,7 @@ dependencies {
 //    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 //    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
 //    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-//    debugImplementation("androidx.compose.ui:ui-tooling")
-//    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
@@ -117,6 +115,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.0")
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
+    implementation("com.google.android.engage:engage-core:1.3.1")
+    testImplementation("junit:junit:4.12")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

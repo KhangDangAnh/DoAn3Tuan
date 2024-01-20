@@ -14,7 +14,7 @@ import com.example.doan_3tuan.View.Screen.TrendingScreen
 import com.example.doan_3tuan.View.Screen.VideoScreen
 
 @Composable
-fun RootGraph(navHostController: NavHostController,viewModelNotification :NotificationViewModel,viewModelTrendingViewModel : TrendingViewModel)
+fun RootGraph(navHostController: NavHostController,viewModelTrendingViewModel : TrendingViewModel)
 {
    NavHost(navController = navHostController, startDestination = NavRoot.trangchu.root)
    {
