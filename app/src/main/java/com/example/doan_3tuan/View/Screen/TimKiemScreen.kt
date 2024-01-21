@@ -48,7 +48,6 @@ import com.example.doan_3tuan.Model.UiResult
 import com.example.doan_3tuan.R
 import com.example.doan_3tuan.View.Component.Baiviet_Card
 import com.example.doan_3tuan.ViewModel.BVviewModel.HomeViewModel
-import com.example.doan_3tuan.ViewModel.BVviewModel.SearchViewModel
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField

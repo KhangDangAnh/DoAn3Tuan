@@ -5,7 +5,7 @@ import com.example.doan_3tuan.Model.LoadRss.Rss
 import tw.ktrssreader.kotlin.model.channel.RssStandardChannel
 import tw.ktrssreader.kotlin.model.item.RssStandardItem
 
-class HomeUiMapper {
+class GetRssValue {
 
     fun map(response: RssStandardChannel): Rss {
         return Rss(

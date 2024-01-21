@@ -11,7 +11,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.doan_3tuan.View.Screen.Chitiet_Screen
+import com.example.doan_3tuan.View.Screen.MainScreen
 import com.example.doan_3tuan.View.Screen.SaveNewsScreen
+import com.example.doan_3tuan.ViewModel.BVviewModel.NewsViewModel
 import com.example.doan_3tuan.ViewModel.RootGraph
 import com.example.doan_3tuan.ui.theme.Doan_3tuanTheme
 
@@ -23,7 +25,7 @@ class MainActivity : ComponentActivity() {
             Doan_3tuanTheme {
                 val navRootController = rememberNavController()
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                   RootGraph(navHostController = navRootController)
+                  RootGraph(navHostController = navRootController)
                 }
             }
         }

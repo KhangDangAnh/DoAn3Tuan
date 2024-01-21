@@ -38,6 +38,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -45,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -52,15 +54,21 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.doan_3tuan.Model.BottomNavigationItem
+import com.example.doan_3tuan.Model.LoadRss.Baiviet
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.Model.UiResult
 import com.example.doan_3tuan.R
 import com.example.doan_3tuan.View.Component.Baiviet_Card
+import com.example.doan_3tuan.ViewModel.BVviewModel.NewsViewModel
+import io.ktor.http.ContentType.Application.Json
 import kotlinx.coroutines.launch
+import java.io.IOException
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrangChuScreen(navController: NavHostController) {
+
     val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     val homeState = viewModel.uiState.collectAsStateWithLifecycle()
     val state = homeState.value
@@ -101,68 +109,87 @@ fun TrangChuScreen(navController: NavHostController) {
     )
     when (state) {
         is UiResult.Fail -> {
-            Scaffold(topBar = {
-                TopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(Color(0xFF07899B)),
-                    title = {},
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            scope.launch {
-                                navdrawerState.apply {
-                                    if (isClosed) open() else close()
-                                }
-                            }
-                        }) {
-                            Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
+            ModalNavigationDrawer(drawerState = navdrawerState, drawerContent = {
+                ModalDrawerSheet {
+                    Column(
+                        Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.SpaceAround,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Công cụ", fontWeight = FontWeight.ExtraBold)
+                        Divider(Modifier.padding(20.dp))
+                        congcu.forEach { (tool, icon) ->
+                            NavigationDrawerItem(
+                                label = {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 10.dp, horizontal = 20.dp),
+                                    )
+                                    {
+                                        Icon(
+                                            painter = painterResource(icon),
+                                            contentDescription = ""
+                                        )
+                                        Text(text = tool)
+                                    }
+                                },
+                                selected = false,
+                                onClick = { navController.navigate(NavRoot.luunews.root + "?id=${1234}") })
                         }
-                    },
-                    actions = {
-                        IconButton(onClick = { navController.navigate(NavRoot.timkiem.root) }) {
-                            Icon(imageVector = Icons.Outlined.Search, contentDescription = "")
-                        }
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                imageVector = Icons.Outlined.AccountCircle,
-                                contentDescription = ""
-                            )
-                        }
-                    }
-                )
-            }, bottomBar = {
-                NavigationBar(
-                    Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)),
-                    containerColor = Color(0xFF07899B)
-                ) {
-                    items.forEachIndexed { index, item ->
-                        NavigationBarItem(
-                            selected = selectedItemIndex == index,
-                            onClick = { selectedItemIndex = index },
-                            icon = {
-                                Icon(
-                                    painter = painterResource(id = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon),
-                                    contentDescription = item.title
-                                )
-                            })
-
                     }
                 }
             }) {
-                LazyColumn(
-                    Modifier
-                        .fillMaxSize()
-                        .padding(it),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                )
-                {
-                    item {
-                        Icon(
-                            painter = painterResource(id = R.drawable.outline_article_24),
-                            contentDescription = "Không có thông tin gì"
-                        )
-                        Text(text = "Không có thông tin gì", fontWeight = FontWeight.Bold)
+                Scaffold(topBar = {
+                    TopAppBar(
+                        colors = TopAppBarDefaults.topAppBarColors(Color(0xFF07899B)),
+                        title = {},
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                scope.launch {
+                                    navdrawerState.apply {
+                                        if (isClosed) open() else close()
+                                    }
+                                }
+                            }) {
+                                Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = { navController.navigate(NavRoot.timkiem.root) }) {
+                                Icon(imageVector = Icons.Outlined.Search, contentDescription = "")
+                            }
+                            IconButton(onClick = { /*TODO*/ }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.AccountCircle,
+                                    contentDescription = ""
+                                )
+                            }
+                        }
+                    )
+                }, bottomBar = {
+                    NavigationBar(
+                        Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)),
+                        containerColor = Color(0xFF07899B)
+                    ) {
+                        items.forEachIndexed { index, item ->
+                            NavigationBarItem(
+                                selected = selectedItemIndex == index,
+                                onClick = { selectedItemIndex = index },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(id = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon),
+                                        contentDescription = item.title
+                                    )
+                                })
+
+                        }
+                    }
+                }) {
+                    Column(Modifier.padding(it)) {
+                        MainScreen()
                     }
                 }
             }

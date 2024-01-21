@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel : ViewModel() {
     private val cloudService = CloudService()
-    private val uiMapper = HomeUiMapper()
+    private val uiMapper = GetRssValue()
 
     private val _uiState = MutableStateFlow<UiResult<Rss>>(UiResult.Loading)
 
