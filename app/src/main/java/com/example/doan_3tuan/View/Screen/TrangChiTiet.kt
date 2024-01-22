@@ -45,7 +45,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
+fun Chitiet_Screen(navController: NavHostController, linkurl: String,Id : String) {
     val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     val saveVM : SaveNews = viewModel(modelClass = SaveNews::class.java)
     val homeState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -72,13 +72,13 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = { Text(text = "") },
+                        title = {},
                         colors = TopAppBarDefaults.topAppBarColors(Color(color))
                     )
                 },
                 bottomBar = {
                     BottomAppBar(actions = {
-                        IconButton(onClick = { saveVM.setValueSaveNews(linkurl,"Id") }) {
+                        IconButton(onClick = { saveVM.setValueSaveNews(linkurl,Id) }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_bookmark_24),
                                 contentDescription = ""

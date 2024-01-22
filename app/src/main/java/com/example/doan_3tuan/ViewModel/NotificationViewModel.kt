@@ -1,41 +1,80 @@
 package com.example.doan_3tuan.ViewModel
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.doan_3tuan.Model.Notification
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.io.BufferedReader
-import java.text.SimpleDateFormat
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-class NotificationViewModel(private val context: Context) : ViewModel() {
-    private var notifications: List<Notification> = emptyList()
-    fun getNotifications(): List<Notification> {
-        if (notifications.isEmpty()) {
-            val json = readJsonFromFile(context, "notifications.json")
-            val type = object : TypeToken<List<Notification>>() {}.type
-            notifications = Gson().fromJson(json, type)
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+class NotificationViewModelFirebase:ViewModel() {
+    var state by mutableStateOf(NotificationScreenState())
+        private set
+
+    init {
+        getAllNotification()
+    }
+
+    private fun getAllNotification() {
+        viewModelScope.launch {
+            var ls = mutableListOf<Notification>()
+            Firebase.firestore.collection("Notification")
+                .addSnapshotListener { value, _ ->
+                    if (value != null) {
+                        for (doc in value) {
+                            var noti = doc.toObject(Notification::class.java)
+                            ls.add(noti)
+                        }
+                    }
+                    state = state.copy(
+                        contactList = ls
+                    )
+                }
         }
-        return notifications
+    }
+     fun deleteNotification(notificationId: String, context: Context) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("Notification")
+            .document(notificationId)
+            .delete()
+            .addOnSuccessListener {
+                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Không thể xóa: $e", Toast.LENGTH_SHORT).show()
+            }
+    }
+    fun refreshNotifications() {
+        getAllNotification()
     }
 
-    fun readJsonFromFile(context: Context, filename: String): String {
-        val inputStream = context.assets.open(filename)
-        val bufferedReader = BufferedReader(inputStream.reader())
-        return bufferedReader.use { it.readText() }
-    }
-    fun sortNotificationByOldest(): List<Notification> {
-        var sortNotification: List<Notification> = emptyList()
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
-        if (getNotifications().isNotEmpty()) {
-            sortNotification =
-                getNotifications().sortedBy { notification ->
-                    dateFormat.parse(notification.time) }
-
+    fun sortNotifications(byOldest: Boolean) {
+        Log.d("SortTest", "Before Sort: $state.contactList")
+        state.contactList = if (byOldest) {
+            state.contactList.sortedBy { it.time }
+        } else {
+            state.contactList.sortedByDescending { it.time }
         }
-        return sortNotification
+        Log.d("SortTest", "After Sort: $state.contactList")
     }
-    fun sortNotificationByLastest(): List<Notification> {
-        return sortNotificationByOldest().reversed()
-    }
+
 }
+data class NotificationScreenState(
+    var contactList: List<Notification> = emptyList()
+)

@@ -11,5 +11,7 @@ sealed class NavRoot(val root: String)
 
     object luunews : NavRoot("luunews")
 
-    object video : NavRoot("video")
+    object videoScr : NavRoot("video")
+
+    object thongbao : NavRoot("thongbao")
 }

@@ -40,6 +40,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,6 +54,7 @@ import androidx.navigation.NavHostController
 import com.example.doan_3tuan.Model.Drawer
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.Model.LoadRss.UiResult
+import com.example.doan_3tuan.Model.UserData
 import com.example.doan_3tuan.R
 import com.example.doan_3tuan.View.Component.Baiviet_Card
 import com.example.doan_3tuan.View.Component.NavBottomAppBar
@@ -65,7 +67,15 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TrangChuScreen(navController: NavHostController) {
+fun TrangChuScreen(navController: NavHostController, userData: UserData?) {
+    val accountViewModel: AccountViewModel = viewModel(modelClass = AccountViewModel::class.java)
+    var isLoggedIn by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = true){
+        accountViewModel.checkLoginStatus()
+        isLoggedIn =accountViewModel.isLoggedIn
+    }
+    var idDialog by remember{ mutableStateOf(0)}
+    var openDialog by remember { mutableStateOf(false) }
 
     val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     val homeState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -74,12 +84,16 @@ fun TrangChuScreen(navController: NavHostController) {
     val scope = rememberCoroutineScope()
     val congcu = listOf(
         Drawer("Tin Tức", R.drawable.baseline_article_24, NavRoot.trangchu.root),
-        Drawer("Video", R.drawable.baseline_video_library_24, NavRoot.trangchu.root),
+        Drawer("Video", R.drawable.baseline_video_library_24, NavRoot.videoScr.root),
         Drawer("Xu Hướng", R.drawable.baseline_data_thresholding_24, NavRoot.xuhuong.root),
         Drawer("Tiện Ích", R.drawable.baseline_dataset_24, NavRoot.trangchu.root),
-        Drawer("Thông Báo", R.drawable.outline_circle_notifications_24, NavRoot.luunews.root),
+        Drawer("Thông Báo", R.drawable.outline_circle_notifications_24, NavRoot.thongbao.root),
         Drawer("Đã Lưu", R.drawable.baseline_bookmark_24, NavRoot.luunews.root + "?id=${1234}"),
     )
+    var email by remember {
+        mutableStateOf("")
+    }
+    email = userData?.email.toString()
     when (state) {
         is UiResult.Fail -> {
             val ctx = LocalContext.current
@@ -94,7 +108,6 @@ fun TrangChuScreen(navController: NavHostController) {
                     ) {
                         Text(text = "Công cụ", fontWeight = FontWeight.ExtraBold)
                         Divider(Modifier.padding(20.dp))
-                        congcu.forEach {
                             NavigationDrawerItem(
                                 label = {
                                     Row(
@@ -104,47 +117,107 @@ fun TrangChuScreen(navController: NavHostController) {
                                     )
                                     {
                                         Icon(
-                                            painter = painterResource(it.Icon),
+                                            painter = painterResource(R.drawable.baseline_article_24),
                                             contentDescription = ""
                                         )
-                                        Text(text = it.title)
+                                        Text(text = "Tin Tức")
                                     }
                                 },
                                 selected = false,
-                                onClick = { navController.navigate(it.nav) })
-
-//     val accountViewModel: AccountViewModel = viewModel(modelClass = AccountViewModel::class.java)
-//     var isLoggedIn by remember { mutableStateOf(false) }
-//     LaunchedEffect(key1 = true){
-//         accountViewModel.checkLoginStatus()
-//         isLoggedIn =accountViewModel.isLoggedIn
-//     }
-//     var idDialog by remember{ mutableStateOf(0)}
-//     var openDialog by remember { mutableStateOf(false) }
-
-//     ModalNavigationDrawer(drawerState = navdrawerState, drawerContent = {
-//         ModalDrawerSheet {
-//             Column(
-//                 Modifier.fillMaxWidth(),
-//                 verticalArrangement = Arrangement.SpaceAround,
-//                 horizontalAlignment = Alignment.CenterHorizontally
-//             ) {
-//                 Text(text = "Công cụ", fontWeight = FontWeight.ExtraBold)
-//                 Divider(Modifier.padding(20.dp))
-//                 congcu.forEach { (tool, icon) ->
-//                     NavigationDrawerItem(label = {
-//                         Row(
-//                             modifier = Modifier
-//                                 .fillMaxWidth()
-//                                 .padding(vertical = 10.dp, horizontal = 20.dp),
-//                         )
-//                         {
-//                             Icon(
-//                                 painter = painterResource(icon),
-//                                 contentDescription = ""
-//                             )
-//                             Text(text = tool)
-                        }
+                                onClick = {navController.navigate( NavRoot.trangchu.root )})
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_video_library_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Video")
+                                }
+                            },
+                            selected = false,
+                            onClick = { navController.navigate(NavRoot.videoScr.root) })
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_data_thresholding_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Xu Hướng")
+                                }
+                            },
+                            selected = false,
+                            onClick = { navController.navigate(NavRoot.xuhuong.root)})
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_dataset_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Tiện ích")
+                                }
+                            },
+                            selected = false,
+                            onClick = {navController.navigate(NavRoot.tienich.root)})
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.outline_circle_notifications_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Thông báo")
+                                }
+                            },
+                            selected = false,
+                            onClick = { navController.navigate(NavRoot.thongbao.root )})
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_bookmark_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Đã Lưu")
+                                }
+                            },
+                            selected = false,
+                            onClick = {
+                                if(!isLoggedIn){
+                                    idDialog = 1
+                                    openDialog = true
+                                }
+                                else {
+                                    navController.navigate(NavRoot.luunews.root + "?id = $email")
+                                }
+                            })
                     }
                 }
             }) {
@@ -220,6 +293,18 @@ fun TrangChuScreen(navController: NavHostController) {
         }
 
         is UiResult.Success -> {
+            if(!isLoggedIn){
+            }
+            else {
+                email = userData?.email.toString()
+                val substring = "."
+                val position = email.indexOf(substring)
+                email = email.substring(0, position)
+            }
+            var email by remember {
+                mutableStateOf("")
+            }
+
             val data = state.data
             ModalNavigationDrawer(drawerState = navdrawerState, drawerContent = {
                 ModalDrawerSheet {
@@ -230,25 +315,116 @@ fun TrangChuScreen(navController: NavHostController) {
                     ) {
                         Text(text = "Công cụ", fontWeight = FontWeight.ExtraBold)
                         Divider(Modifier.padding(20.dp))
-                        congcu.forEach {
-                            NavigationDrawerItem(
-                                label = {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(vertical = 10.dp, horizontal = 20.dp),
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_article_24),
+                                        contentDescription = ""
                                     )
-                                    {
-                                        Icon(
-                                            painter = painterResource(it.Icon),
-                                            contentDescription = ""
-                                        )
-                                        Text(text = it.title)
-                                    }
-                                },
-                                selected = false,
-                                onClick = { navController.navigate(it.nav) })
-                        }
+                                    Text(text = "Tin Tức")
+                                }
+                            },
+                            selected = false,
+                            onClick = {navController.navigate( NavRoot.trangchu.root )})
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_video_library_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Video")
+                                }
+                            },
+                            selected = false,
+                            onClick = { navController.navigate(NavRoot.videoScr.root) })
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_data_thresholding_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Xu Hướng")
+                                }
+                            },
+                            selected = false,
+                            onClick = { navController.navigate(NavRoot.xuhuong.root)})
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_dataset_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Tiện ích")
+                                }
+                            },
+                            selected = false,
+                            onClick = {navController.navigate(NavRoot.tienich.root)})
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.outline_circle_notifications_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Thông báo")
+                                }
+                            },
+                            selected = false,
+                            onClick = { navController.navigate(NavRoot.thongbao.root )})
+                        NavigationDrawerItem(
+                            label = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp),
+                                )
+                                {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_bookmark_24),
+                                        contentDescription = ""
+                                    )
+                                    Text(text = "Đã Lưu")
+                                }
+                            },
+                            selected = false,
+                            onClick = {
+                                if(!isLoggedIn){
+                                    idDialog = 1
+                                    openDialog = true
+                                }
+                                else {
+                                    navController.navigate(NavRoot.luunews.root + "?id=${email}")
+                                }
+                            })
                     }
                 }
             }) {
@@ -268,7 +444,7 @@ fun TrangChuScreen(navController: NavHostController) {
                             }
                         },
                         actions = {
-                            IconButton(onClick = { navController.navigate(NavRoot.timkiem.root) }) {
+                            IconButton(onClick = { navController.navigate(NavRoot.timkiem.root+"?id=${email}") }) {
                                 Icon(imageVector = Icons.Outlined.Search, contentDescription = "")
                             }
                             IconButton(onClick = { /*TODO*/ }) {
@@ -304,7 +480,7 @@ fun TrangChuScreen(navController: NavHostController) {
                         }
                         items(data.baiviet.take(8)) { item ->
                             Baiviet_Card(item) {
-                                navController.navigate(NavRoot.chitiet.root + "?link=${it.link}")
+                                navController.navigate(NavRoot.chitiet.root + "?link=${it.link}"+"?id=$email")
                             }
                         }
                     }
@@ -312,23 +488,22 @@ fun TrangChuScreen(navController: NavHostController) {
             }
         }
     }
-//    if (openDialog) {
-//        var text = ""
-//        if (idDialog == 1) {
-//            text = "Hãy đăng nhập để xử dụng chức năng"
-//        }
-//        else if(idDialog == 2){
-//            text ="Bạn đã đăng nhập"
-//        }
-//        DialogRequireLogin(
-//            onDiss = {
-//                openDialog = false
-//            },
-//            onConfirm = {
-//                openDialog = false
-//                navCotroller.navigate(Screens.Login.route)
-//            },
-//            title = text,
-//        )
-//    }
+    if (openDialog) {
+        var text = ""
+        if (idDialog == 1) {
+            text = "Hãy đăng nhập để xử dụng chức năng"
+        }
+
+        DialogRequireLogin(
+            onDiss = {
+                openDialog = false
+            },
+            onConfirm = {
+                openDialog = false
+                navController.navigate(Screens.Login.route)
+            },
+            title = text,
+        )
+    }
 }
+

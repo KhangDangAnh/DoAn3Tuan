@@ -56,6 +56,10 @@ android {
 }
 
 dependencies {
+
+    implementation("com.google.android.exoplayer:exoplayer:2.15.0")
+    implementation("com.github.skydoves:landscapist-glide:1.3.1")
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.coil-kt:coil:2.5.0")

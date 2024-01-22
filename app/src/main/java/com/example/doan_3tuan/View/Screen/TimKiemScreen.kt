@@ -55,7 +55,7 @@ import com.example.doan_3tuan.ViewModel.BVviewModel.NewsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimKiemScreen(navController: NavController) {
+fun TimKiemScreen(navController: NavController,email : String) {
     val items = listOf(
         BottomNavigationItem(
             "Tin Tức",
@@ -214,7 +214,7 @@ fun TimKiemScreen(navController: NavController) {
                         items(SearchItem)
                         {
                             Baiviet_Card(item = it) {
-                                navController.navigate(NavRoot.chitiet.root + "?link=${it.link}")
+                                navController.navigate(NavRoot.chitiet.root + "?link=${it.link}"+"?id=$email")
                             }
                         }
                     }

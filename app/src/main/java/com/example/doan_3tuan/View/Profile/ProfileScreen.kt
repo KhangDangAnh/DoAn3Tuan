@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -48,14 +49,37 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.doan_3tuan.Model.NavRoot
+import com.example.doan_3tuan.Model.UserData
 import com.example.doan_3tuan.R
 import com.example.doan_3tuan.View.Component.NavBottomAppBar
+import com.example.doan_3tuan.ViewModel.AccountViewModel
+import com.example.doan_3tuan.ViewModel.DialogRequireLogin
+import com.example.doan_3tuan.ViewModel.Screens
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(navController : NavController) {
+fun ProfileScreen(
+    navController : NavController,
+    userData: UserData?,
+    onSignOutClick :() -> Unit,
+) {
     val ctx = LocalContext.current
     val viewModel = SettingViewModel(context = ctx)
+
+    val accountViewModel: AccountViewModel = viewModel(modelClass = AccountViewModel::class.java)
+    var isLoggedIn by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = true){
+        accountViewModel.checkLoginStatus()
+        isLoggedIn =accountViewModel.isLoggedIn
+    }
+
+    var idDialog by remember{ mutableStateOf(0)}
+    var openDialog by remember { mutableStateOf(false) }
+    val currentUser = FirebaseAuth.getInstance().currentUser
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -115,27 +139,72 @@ fun ProfileScreen(navController : NavController) {
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = "Đăng nhập",
-                    fontSize = 20.sp
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(
-                    onClick = { /* Lưu */ }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_bookmark_24),
-                        contentDescription = null
+                if (!isLoggedIn){
+                    Text(
+                        modifier = Modifier
+                            .clickable {
+                                navController.navigate(Screens.Login.route)
+                            },
+                        text = "Đăng nhập",
+                        fontSize = 20.sp
                     )
                 }
+                else{
+                    if(userData?.email != null){
+                        Text(
+                            modifier = Modifier
+                                .clickable {
+                                    navController.navigate(Screens.Login.route)
+                                },
+                            text = userData.email,
+                            fontSize = 20.sp
+                        )
+                    }
+                    else if(currentUser!=null){
+                        if(currentUser?.email !=null){
+                            Text(
+                                modifier = Modifier
+                                    .clickable {
+                                        navController.navigate(Screens.Login.route)
+                                    },
+                                text = currentUser.email!!,
+                                fontSize = 20.sp
+                            )
+                        }
+                    }
+
+                }
+//                Text(
+//                    modifier = Modifier
+//                        .clickable {
+//                            navController.navigate(Screens.Login.route)
+//                        },
+//                    text = "Đăng nhập",
+//                    fontSize = 20.sp
+//                )
+            }
+            Row(
+                modifier = Modifier
+                    .padding(start = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_bookmark_24),
+                    contentDescription = null
+                )
                 Text(
                     text = "Đã lưu",
                     fontSize = 20.sp,
                     modifier = Modifier
-                        .clickable { /*Trang luu*/ }
+                        .padding(10.dp)
+                        .clickable {
+                            if (!isLoggedIn) {
+                                idDialog = 1
+                                openDialog = true
+                            } else {
+                                navController.navigate(NavRoot.luunews.root)
+                            }
+                        }
                 )
             }
             Divider(
@@ -254,11 +323,49 @@ fun ProfileScreen(navController : NavController) {
             }
             Row(
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 8.dp)
+                    .padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
             ) {
                 DieuKhoanWithDialog()
             }
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(5.dp)
+                    .background(Color.Gray)
+            )
+            Row(
+                modifier = Modifier
+                    .padding(top = 10.dp, bottom = 10.dp)) {
+
+                TextButton(
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 8.dp),
+                    onClick = onSignOutClick
+
+                    ){
+                    Text(text = "Đăng xuất",
+                        fontSize = 20.sp,)
+                }
+            }
         }
+    }
+
+    if (openDialog) {
+        var text = ""
+        if (idDialog == 1) {
+            text = "Hãy đăng nhập để xử dụng chức năng"
+        }
+
+        DialogRequireLogin(
+            onDiss = {
+                openDialog = false
+            },
+            onConfirm = {
+                openDialog = false
+                navController.navigate(Screens.Login.route)
+            },
+            title = text,
+        )
     }
 }
 @Composable

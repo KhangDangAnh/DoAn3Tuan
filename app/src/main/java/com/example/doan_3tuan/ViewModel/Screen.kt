@@ -23,11 +23,12 @@ import com.example.doan_3tuan.View.Login.ForgotPasswordScreen
 import com.example.doan_3tuan.View.Login.LoginScreen
 import com.example.doan_3tuan.View.Login.RegisterScreen
 import com.example.doan_3tuan.View.Screen.Chitiet_Screen
+import com.example.doan_3tuan.View.Screen.NotificationScreen
 import com.example.doan_3tuan.View.Screen.SaveNewsScreen
 import com.example.doan_3tuan.View.Screen.TimKiemScreen
 import com.example.doan_3tuan.View.Screen.TrangChuScreen
+import com.example.doan_3tuan.View.Screen.VideoScreen
 import com.example.doan_3tuan.View.Screen.XuhuongScreen
-import com.example.doan_3tuan.View.VideoScreen
 import kotlinx.coroutines.launch
 
 sealed class Screens(val route :String) {
@@ -36,14 +37,6 @@ sealed class Screens(val route :String) {
     object ForgotPassword : Screens("ForgotPassword_Screen")
     object HomeScreen:Screens("Home_Screen")
 
-    object chitiet : Screens("chitiet")
-
-    object timkiem : Screens("timkiem")
-    object xuhuong : Screens("xuhuong")
-    object tienich : Screens("tienich")
-
-    object luunews : Screens("luunews")
-    //object TrangChiTiet:Screens("TrangChiTiet_Screen")
 }
 
 @Composable
@@ -153,19 +146,13 @@ fun NavGraph(
             )
         }
         composable(Screens.HomeScreen.route){
-            TrangChuScreen(navController)
+            TrangChuScreen(navController,googleAuthUiClient.getSignedInUser())
         }
-        composable(
-            NavRoot.chitiet.root + "?link={link}",
-            arguments = listOf(navArgument("link") { nullable = true })
-        )
+        composable(NavRoot.timkiem.root+"?email={email}",
+            arguments = listOf(navArgument("email") { nullable = true }))
         {
-            val url = it.arguments?.getString("link")
-            Chitiet_Screen(navController, url ?: "")
-        }
-        composable(NavRoot.timkiem.root)
-        {
-            TimKiemScreen(navController = navController)
+            val email = it.arguments?.getString("email")
+            TimKiemScreen(navController,email?:"")
         }
         composable(
             NavRoot.luunews.root + "?id={id}",
@@ -179,13 +166,41 @@ fun NavGraph(
         {
             XuhuongScreen(navController = navController)
         }
-        composable(NavRoot.video.root)
+        composable(NavRoot.videoScr.root)
         {
-            VideoScreen(navController)
+            VideoScreen()
         }
         composable(NavRoot.tienich.root)
         {
-            ProfileScreen(navController)
+            ProfileScreen(
+                navController,
+                userData = googleAuthUiClient.getSignedInUser(),
+                onSignOutClick = {
+                    lifecycleOwner.lifecycleScope.launch {
+                        googleAuthUiClient.signOut()
+                        Toast.makeText(
+                            context,
+                            "Sign out",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        navController.popBackStack()
+                    }
+                },)
+        }
+        composable(NavRoot.thongbao.root)
+        {
+            NotificationScreen(navController)
+        }
+        composable(
+            NavRoot.chitiet.root + "?link={link}" + "?id={id}",
+            arguments = listOf(
+                navArgument("link") { nullable = true },
+                navArgument("id") { nullable = true })
+        )
+        {
+            val url = it.arguments?.getString("link")
+            val id = it.arguments?.getString("id")
+            Chitiet_Screen(navController, url ?: "",id?:"")
         }
 
     }

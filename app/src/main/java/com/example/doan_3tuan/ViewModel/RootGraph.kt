@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.doan_3tuan.Model.LoadRss.Baiviet
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.View.Screen.Chitiet_Screen
+import com.example.doan_3tuan.View.Screen.NotificationScreen
 import com.example.doan_3tuan.View.Screen.SaveNewsScreen
 import com.example.doan_3tuan.View.Screen.TimKiemScreen
 import com.example.doan_3tuan.View.Screen.TrangChuScreen
@@ -21,21 +22,11 @@ import com.example.doan_3tuan.ViewModel.BVviewModel.NewsViewModel
 fun RootGraph(navHostController: NavHostController) {
     NavHost(navController = navHostController, startDestination = NavRoot.trangchu.root)
     {
-        composable(NavRoot.trangchu.root)
+        composable(NavRoot.timkiem.root+"?email={email}",
+            arguments = listOf(navArgument("email") { nullable = true }))
         {
-            TrangChuScreen(navController = navHostController)
-        }
-        composable(
-            NavRoot.chitiet.root + "?link={link}",
-            arguments = listOf(navArgument("link") { nullable = true })
-        )
-        {
-            val url = it.arguments?.getString("link")
-            Chitiet_Screen(navHostController, url ?: "")
-        }
-        composable(NavRoot.timkiem.root)
-        {
-            TimKiemScreen(navController = navHostController)
+            val email = it.arguments?.getString("email")
+            TimKiemScreen(navController = navHostController,email?:"")
         }
         composable(
             NavRoot.luunews.root + "?id={id}",
@@ -45,9 +36,9 @@ fun RootGraph(navHostController: NavHostController) {
             val id = it.arguments?.getString("id")
             SaveNewsScreen(navHostController, id ?: "")
         }
-        composable(NavRoot.xuhuong.root)
+        composable(NavRoot.thongbao.root)
         {
-            XuhuongScreen(navController = navHostController)
+            NotificationScreen(navController = navHostController)
         }
     }
 }

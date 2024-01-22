@@ -39,7 +39,7 @@ fun NavBottomAppBar(navController: NavController)
                     tint = Color.DarkGray
                 )
             }
-            IconButton(onClick = {navController.navigate(NavRoot.video.root)}) {
+            IconButton(onClick = {navController.navigate(NavRoot.videoScr.root)}) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_video_library_24),
                     contentDescription = "",
