@@ -186,49 +186,23 @@ fun TrangChuScreen(navController: NavHostController) {
                         verticalArrangement = Arrangement.Center
                     )
                     {
-                        item{
-                            Text(text = "Bạn đang ngoại tuyến , vui lòng kiểm tra internet để nhận tin mới .", fontWeight = FontWeight.Bold)
+                        item {
+                            Text(
+                                text = "Bạn đang ngoại tuyến , vui lòng kiểm tra internet để nhận tin mới .",
+                                fontWeight = FontWeight.Bold
+                            )
                         }
                         items(news)
                         {
                             Baiviet_Card(item = it)
                             {
-                                navController.navigate(NavRoot.chitiet.root +"?link=${it.link}")
+                                navController.navigate(NavRoot.chitiet.root + "?link=${it.link}")
                             }
                         }
-                    }) {
-                        Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
-                    }
-
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            if(!isLoggedIn){
-                                idDialog = 1
-                                openDialog = true
-                            }
-                            else {
-                                idDialog =2
-                                openDialog = true
-                            }
-                        }
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_favorite_24),
-                            contentDescription = ""
-                        )
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Outlined.Search, contentDescription = "")
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Outlined.AccountCircle, contentDescription = "")
                     }
                 }
             }
         }
-
         UiResult.Loading -> {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -338,23 +312,23 @@ fun TrangChuScreen(navController: NavHostController) {
             }
         }
     }
-    if (openDialog) {
-        var text = ""
-        if (idDialog == 1) {
-            text = "Hãy đăng nhập để xử dụng chức năng"
-        }
-        else if(idDialog == 2){
-            text ="Bạn đã đăng nhập"
-        }
-        DialogRequireLogin(
-            onDiss = {
-                openDialog = false
-            },
-            onConfirm = {
-                openDialog = false
-                navCotroller.navigate(Screens.Login.route)
-            },
-            title = text,
-        )
-    }
+//    if (openDialog) {
+//        var text = ""
+//        if (idDialog == 1) {
+//            text = "Hãy đăng nhập để xử dụng chức năng"
+//        }
+//        else if(idDialog == 2){
+//            text ="Bạn đã đăng nhập"
+//        }
+//        DialogRequireLogin(
+//            onDiss = {
+//                openDialog = false
+//            },
+//            onConfirm = {
+//                openDialog = false
+//                navCotroller.navigate(Screens.Login.route)
+//            },
+//            title = text,
+//        )
+//    }
 }

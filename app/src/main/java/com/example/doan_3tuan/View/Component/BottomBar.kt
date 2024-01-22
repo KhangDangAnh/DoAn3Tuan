@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.R
+import com.example.doan_3tuan.ViewModel.Screens
+
 @Composable
 fun NavBottomAppBar(navController: NavController)
 {
@@ -30,14 +32,14 @@ fun NavBottomAppBar(navController: NavController)
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            IconButton(onClick = { navController.navigate(NavRoot.trangchu.root) }) {
+            IconButton(onClick = { navController.navigate(Screens.HomeScreen.route) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_article_24),
                     contentDescription = "",
                     tint = Color.DarkGray
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = {navController.navigate(NavRoot.video.root)}) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_video_library_24),
                     contentDescription = "",
@@ -51,7 +53,7 @@ fun NavBottomAppBar(navController: NavController)
                     tint = Color.DarkGray
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = {navController.navigate(NavRoot.tienich.root)}) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_dataset_24),
                     contentDescription = "",

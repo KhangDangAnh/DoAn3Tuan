@@ -1,4 +1,6 @@
-package com.example.doan_3tuan.View.SangQuach
+@file:Suppress("UNUSED_EXPRESSION")
+
+package com.example.doan_3tuan.QuachVanSang
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,7 +36,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,10 +49,12 @@ import com.example.doan_3tuan.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingFontScreen(){
-    var checked by remember { mutableStateOf(true) }
-    val list = listOf("Inria Sans", "A")
-    var selectedOption by remember { mutableStateOf("Inria Sans") }
+fun SettingFontScreen() {
+    val ctx = LocalContext.current
+    val viewModel = SettingViewModel(context = ctx)
+    var inriaSansFontFamily by remember { mutableStateOf(FontFamily(Font(R.font.inriasans))) }
+    var arialFontFamily by remember { mutableStateOf(FontFamily(Font(R.font.arial))) }
+    var styleFont = if (viewModel.font) inriaSansFontFamily else arialFontFamily
     Scaffold(
         topBar = {
             TopAppBar(
@@ -86,7 +95,8 @@ fun SettingFontScreen(){
             ) {
                 Text(
                     text = "Font chữ:",
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    fontFamily = styleFont
                 )
 
                 var expanded by remember { mutableStateOf(false) }
@@ -100,7 +110,8 @@ fun SettingFontScreen(){
                         }
                 ) {
                     Text(
-                        text = selectedOption,
+                        fontFamily = styleFont,
+                        text = if(viewModel.font) "Inria Sans" else "Arial",
                         color = Color.Black,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -114,14 +125,14 @@ fun SettingFontScreen(){
                         DropdownMenuItem(
                             text = { Text(text = "Inria Sans", color = Color.White) },
                             onClick = {
-                                selectedOption = "Inria Sans"
+                                viewModel.saveFontState(true,"Inria Sans")
                                 expanded = false
                             },
                         )
                         DropdownMenuItem(
-                            text = { Text(text = "Aria", color = Color.White) },
+                            text = { Text(text = "Arial", color = Color.White) },
                             onClick = {
-                                selectedOption = "Aria"
+                                viewModel.saveFontState(false, "Arial")
                                 expanded = false
                             },
                         )
@@ -142,17 +153,21 @@ fun SettingFontScreen(){
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
+                    fontFamily = styleFont,
                     text = "Cỡ chữ: ",
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                Text(text = "Nhỏ", fontSize = 15.sp)
+                Text(text = "Nhỏ", fontSize = 16.sp, fontFamily = styleFont)
                 Spacer(modifier = Modifier.padding(end = 5.dp))
                 Switch(
-                    checked = checked,
-                    onCheckedChange = { checked = it },
+                    checked = viewModel.large,
+                    onCheckedChange = {
+                        viewModel.large = it
+                        viewModel.saveLargeState(it)
+                    },
                     thumbContent = {
-                        if (checked) {
+                        if (viewModel.large) {
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_circle_24),
                                 contentDescription = ""
@@ -166,7 +181,7 @@ fun SettingFontScreen(){
                     }
                 )
                 Spacer(modifier = Modifier.padding(start = 5.dp))
-                Text(text = "Lớn", fontSize = 20.sp)
+                Text(text = "Lớn", fontSize = 20.sp, fontFamily = styleFont)
             }
             Divider(
                 modifier = Modifier
@@ -176,11 +191,15 @@ fun SettingFontScreen(){
                     .background(Color.Black)
             )
             Text(
-                modifier = Modifier.fillMaxWidth().padding(top = 20.dp, start = 30.dp, end = 30.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp, start = 30.dp, end = 30.dp),
                 text = "Lịch nghỉ Tết Âm lịch 2024 của học sinh Hà Nội như sau: Theo thông tin mới nhất thì các" +
                         " ngày nghỉ lễ, tết được thực hiện theo quy định của Luật lao động và các văn bản hướng dẫn" +
                         " hàng năm. Như vậy lịch nghỉ Tết Nguyên đán 2024 của học sinh Hà Nội sẽ bắt đầu từ ngày " +
-                        "8-14/2/2024 (tức 29 tháng Chạp năm Quý Mão đến hết mùng 5 tháng Giêng năm Giáp Thìn)."
+                        "8-14/2/2024 (tức 29 tháng Chạp năm Quý Mão đến hết mùng 5 tháng Giêng năm Giáp Thìn).",
+                fontSize = if (viewModel.large) 20.sp else 16.sp,
+                fontFamily = styleFont
             )
         }
     }

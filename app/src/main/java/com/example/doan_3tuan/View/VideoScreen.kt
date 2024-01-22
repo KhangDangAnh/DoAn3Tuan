@@ -32,6 +32,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.doan_3tuan.View.Component.NavBottomAppBar
 import com.example.doan_3tuan.ViewModel.VideoViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -39,7 +42,9 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VideoScreen(viewModel: VideoViewModel) {
+fun VideoScreen(navController : NavController) {
+    val ctx = LocalContext.current
+    val viewModel = VideoViewModel(ctx)
     var video by remember {
         mutableStateOf(viewModel.getVideo())
     }
@@ -57,6 +62,8 @@ fun VideoScreen(viewModel: VideoViewModel) {
                         },
                 colors = TopAppBarDefaults.topAppBarColors(Color(0xFF07899B))
             )
+        }, bottomBar = {
+            NavBottomAppBar(navController)
         }
     ) {
        LazyColumn(modifier = Modifier

@@ -16,10 +16,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.doan_3tuan.Model.NavRoot
+import com.example.doan_3tuan.QuachVanSang.ProfileScreen
 import com.example.doan_3tuan.View.Login.ForgotPasswordScreen
 import com.example.doan_3tuan.View.Login.LoginScreen
 import com.example.doan_3tuan.View.Login.RegisterScreen
+import com.example.doan_3tuan.View.Screen.Chitiet_Screen
+import com.example.doan_3tuan.View.Screen.SaveNewsScreen
+import com.example.doan_3tuan.View.Screen.TimKiemScreen
 import com.example.doan_3tuan.View.Screen.TrangChuScreen
+import com.example.doan_3tuan.View.Screen.XuhuongScreen
+import com.example.doan_3tuan.View.VideoScreen
 import kotlinx.coroutines.launch
 
 sealed class Screens(val route :String) {
@@ -27,6 +35,14 @@ sealed class Screens(val route :String) {
     object Register : Screens("Register_Screen")
     object ForgotPassword : Screens("ForgotPassword_Screen")
     object HomeScreen:Screens("Home_Screen")
+
+    object chitiet : Screens("chitiet")
+
+    object timkiem : Screens("timkiem")
+    object xuhuong : Screens("xuhuong")
+    object tienich : Screens("tienich")
+
+    object luunews : Screens("luunews")
     //object TrangChiTiet:Screens("TrangChiTiet_Screen")
 }
 
@@ -137,7 +153,39 @@ fun NavGraph(
             )
         }
         composable(Screens.HomeScreen.route){
-            TrangChuScreen(navCotroller = navController)
+            TrangChuScreen(navController)
+        }
+        composable(
+            NavRoot.chitiet.root + "?link={link}",
+            arguments = listOf(navArgument("link") { nullable = true })
+        )
+        {
+            val url = it.arguments?.getString("link")
+            Chitiet_Screen(navController, url ?: "")
+        }
+        composable(NavRoot.timkiem.root)
+        {
+            TimKiemScreen(navController = navController)
+        }
+        composable(
+            NavRoot.luunews.root + "?id={id}",
+            arguments = listOf(navArgument("id") { nullable = true })
+        )
+        {
+            val id = it.arguments?.getString("id")
+            SaveNewsScreen(navController, id ?: "")
+        }
+        composable(NavRoot.xuhuong.root)
+        {
+            XuhuongScreen(navController = navController)
+        }
+        composable(NavRoot.video.root)
+        {
+            VideoScreen(navController)
+        }
+        composable(NavRoot.tienich.root)
+        {
+            ProfileScreen(navController)
         }
 
     }

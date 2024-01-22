@@ -123,25 +123,7 @@ fun TimKiemScreen(navController: NavController) {
                     }
                 )
             }, bottomBar = {
-                NavigationBar(
-                    Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)),
-                    containerColor = Color(0xFF07899B)
-                ) {
-                    items.forEachIndexed { index, item ->
-                        NavigationBarItem(
-                            selected = selectedItemIndex == index,
-                            onClick = { selectedItemIndex = index },
-                            icon = {
-                                Icon(
-                                    painter = painterResource(id = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon),
-                                    contentDescription = item.title
-                                )
-                            }
-                        )
-                    }
-                }
+            NavBottomAppBar(navController)
             }) {
                 Column(
                     verticalArrangement = Arrangement.Center,
