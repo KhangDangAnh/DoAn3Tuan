@@ -1,14 +1,14 @@
 package com.example.doan_3tuan.ViewModel.BVviewModel
 import android.text.Html
-import com.example.doan_3tuan.Model.Baiviet
-import com.example.doan_3tuan.Model.HomeUiState
+import com.example.doan_3tuan.Model.LoadRss.Baiviet
+import com.example.doan_3tuan.Model.LoadRss.Rss
 import tw.ktrssreader.kotlin.model.channel.RssStandardChannel
 import tw.ktrssreader.kotlin.model.item.RssStandardItem
 
-class HomeUiMapper {
+class GetRssValue {
 
-    fun map(response: RssStandardChannel): HomeUiState {
-        return HomeUiState(
+    fun map(response: RssStandardChannel): Rss {
+        return Rss(
             title = response.title.orEmpty(),
             link = response.link.orEmpty(),
             description = response.description.orEmpty(),

@@ -8,6 +8,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.example.doan_3tuan.View.Screen.Chitiet_Screen
+import com.example.doan_3tuan.View.Screen.MainScreen
+import com.example.doan_3tuan.View.Screen.SaveNewsScreen
+import com.example.doan_3tuan.ViewModel.BVviewModel.NewsViewModel
+import com.example.doan_3tuan.ViewModel.RootGraph
 import com.example.doan_3tuan.ViewModel.AccountViewModel
 import com.example.doan_3tuan.ViewModel.NavGraph
 import com.example.doan_3tuan.ViewModel.GoogleAuthUiClient
@@ -31,6 +36,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 var navcontroller = rememberNavController()
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                  //RootGraph(navHostController = navRootController)
                     NavGraph(
                         navController = navcontroller,
                         lifecycleOwner = this,

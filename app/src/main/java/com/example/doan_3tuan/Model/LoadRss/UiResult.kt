@@ -1,4 +1,4 @@
-package com.example.doan_3tuan.Model
+package com.example.doan_3tuan.Model.LoadRss
 
 sealed interface UiResult<out T> {
     object Loading : UiResult<Nothing>

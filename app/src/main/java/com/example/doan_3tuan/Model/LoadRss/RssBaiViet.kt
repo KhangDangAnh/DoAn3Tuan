@@ -2,7 +2,7 @@ package com.example.doan_3tuan.Model.LoadRss
 
 import androidx.compose.runtime.Immutable
 
-data class HomeUiState(
+data class Rss(
     val title: String,
     val link: String,
     val description: String,
