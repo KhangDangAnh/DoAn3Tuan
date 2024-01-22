@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.doan_3tuan.Model.LoadRss.Baiviet
 import com.example.doan_3tuan.Model.NavRoot
+import com.example.doan_3tuan.View.Screen.CareTrendingScreen
 import com.example.doan_3tuan.View.Screen.Chitiet_Screen
 import com.example.doan_3tuan.View.Screen.SaveNewsScreen
 import com.example.doan_3tuan.View.Screen.TimKiemScreen

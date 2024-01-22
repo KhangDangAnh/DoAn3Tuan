@@ -3,6 +3,12 @@ package com.example.doan_3tuan
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
+import com.example.doan_3tuan.View.Screen.NotificationScreen
+import com.example.doan_3tuan.View.Screen.TrangChuScreen
+import com.example.doan_3tuan.View.Screen.TrendingScreen
+import com.example.doan_3tuan.View.Screen.VideoScreen
+import com.example.doan_3tuan.ViewModel.TrendingViewModel
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,16 +27,15 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.firestore.auth.User
 
 class MainActivity : ComponentActivity() {
+
     internal val googleAuthUiClient by lazy {
         GoogleAuthUiClient(
             context = applicationContext,
             oneTapClient = Identity.getSignInClient(applicationContext)
         )
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             Doan_3tuanTheme {
                 // A surface container using the 'background' color from the theme
