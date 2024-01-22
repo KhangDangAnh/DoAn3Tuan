@@ -45,20 +45,20 @@ import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Chitiet_Screen(navController: NavHostController, linkurl: String,Id : String) {
+fun Chitiet_Screen(navController: NavHostController, linkurl: String, Id: String) {
     val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
-    val saveVM : SaveNews = viewModel(modelClass = SaveNews::class.java)
+    val saveVM: SaveNews = viewModel(modelClass = SaveNews::class.java)
     val homeState = viewModel.uiState.collectAsStateWithLifecycle()
     val state = homeState.value
 
-    val accountViewModel:AccountViewModel = viewModel(modelClass = AccountViewModel::class.java)
+    val accountViewModel: AccountViewModel = viewModel(modelClass = AccountViewModel::class.java)
     var isLoggedIn by remember { mutableStateOf(false) }
 
-    var idDialog by remember{ mutableStateOf(0)}
+    var idDialog by remember { mutableStateOf(0) }
     var openDialog by remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         accountViewModel.checkLoginStatus()
-        isLoggedIn =accountViewModel.isLoggedIn
+        isLoggedIn = accountViewModel.isLoggedIn
     }
     when (state) {
         is UiResult.Fail -> {
@@ -78,7 +78,15 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String,Id : String
                 },
                 bottomBar = {
                     BottomAppBar(actions = {
-                        IconButton(onClick = { saveVM.setValueSaveNews(linkurl,Id) }) {
+
+                        IconButton(onClick = {
+                            if (Id.isEmpty()) {
+                                idDialog = 1
+                                openDialog = true
+                            } else {
+                                saveVM.setValueSaveNews(linkurl, Id)
+                            }
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_bookmark_24),
                                 contentDescription = ""
@@ -117,20 +125,21 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String,Id : String
                             mutableStateOf(false)
                         }
                         var webView: WebView? = null
-                        AndroidView(modifier = Modifier.fillMaxWidth(),factory = {
+                        AndroidView(modifier = Modifier.fillMaxWidth(), factory = {
                             WebView(it).apply {
-                                webViewClient =object : WebViewClient(){
+                                webViewClient = object : WebViewClient() {
                                     override fun onPageStarted(
                                         view: WebView,
                                         url: String?,
                                         favicon: Bitmap?
-                                    ){}
+                                    ) {
+                                    }
                                 }
                                 settings.javaScriptEnabled = true
                                 loadUrl(linkurl)
                                 webView = this
                             }
-                        }, update = {webView = it})
+                        }, update = { webView = it })
                     }
                 }
             }
