@@ -53,6 +53,3 @@ fun Baiviet_Card(item: Baiviet, onItemClicked: (Baiviet) -> Unit) {
         }
     }
 }
-
-
-

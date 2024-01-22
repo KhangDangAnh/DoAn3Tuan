@@ -38,6 +38,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,6 +60,9 @@ import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.Model.UiResult
 import com.example.doan_3tuan.R
 import com.example.doan_3tuan.View.Component.Baiviet_Card
+import com.example.doan_3tuan.ViewModel.AccountViewModel
+import com.example.doan_3tuan.ViewModel.DialogRequireLogin
+import com.example.doan_3tuan.ViewModel.Screens
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,6 +106,16 @@ fun TrangChuScreen(navCotroller: NavHostController) {
         kotlin.Pair("Thông Báo", R.drawable.outline_circle_notifications_24),
         kotlin.Pair("Đã Lưu", R.drawable.baseline_bookmark_24),
     )
+
+    val accountViewModel: AccountViewModel = viewModel(modelClass = AccountViewModel::class.java)
+    var isLoggedIn by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = true){
+        accountViewModel.checkLoginStatus()
+        isLoggedIn =accountViewModel.isLoggedIn
+    }
+    var idDialog by remember{ mutableStateOf(0)}
+    var openDialog by remember { mutableStateOf(false) }
+
     ModalNavigationDrawer(drawerState = navdrawerState, drawerContent = {
         ModalDrawerSheet {
             Column(
@@ -144,8 +158,26 @@ fun TrangChuScreen(navCotroller: NavHostController) {
                     }) {
                         Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
                     }
+
                 },
                 actions = {
+                    IconButton(
+                        onClick = {
+                            if(!isLoggedIn){
+                                idDialog = 1
+                                openDialog = true
+                            }
+                            else {
+                                idDialog =2
+                                openDialog = true
+                            }
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_favorite_24),
+                            contentDescription = ""
+                        )
+                    }
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(imageVector = Icons.Outlined.Search, contentDescription = "")
                     }
@@ -235,5 +267,24 @@ fun TrangChuScreen(navCotroller: NavHostController) {
                 }
             }
         }
+    }
+    if (openDialog) {
+        var text = ""
+        if (idDialog == 1) {
+            text = "Hãy đăng nhập để xử dụng chức năng"
+        }
+        else if(idDialog == 2){
+            text ="Bạn đã đăng nhập"
+        }
+        DialogRequireLogin(
+            onDiss = {
+                openDialog = false
+            },
+            onConfirm = {
+                openDialog = false
+                navCotroller.navigate(Screens.Login.route)
+            },
+            title = text,
+        )
     }
 }

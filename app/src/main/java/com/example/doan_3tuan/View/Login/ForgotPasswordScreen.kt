@@ -27,6 +27,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,14 +40,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import com.example.doan_3tuan.Model.User
+import com.example.doan_3tuan.Model.UserData
+import com.example.doan_3tuan.ViewModel.AccountViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(
-    navController: NavHostController
-){
+    navController: NavHostController,
+    userData: UserData?,
+    onSignOutClick :() -> Unit,
+
+
+    ){
     val tfColor = Color(0xFFD9D9D9)
     //màu chữ sau TextField
     val behindTextColor = Color(0xFF61624B)
@@ -51,6 +65,13 @@ fun ForgotPasswordScreen(
     val mainColor = Color(0xFF07899B)
     //màu chữ giới thiệu
     val guideTextColor = Color(0xFF8BC9D2)
+    val viewModel: AccountViewModel = viewModel(
+        modelClass = AccountViewModel::class.java
+    )
+    //Trạng thái tài khoản
+    val state = viewModel.state
+    var idUser by remember{ mutableStateOf("")}
+    val currentUser = FirebaseAuth.getInstance().currentUser
 
     Scaffold (
         topBar = {
@@ -69,7 +90,7 @@ fun ForgotPasswordScreen(
                 },
             )
         }
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .padding(it)
@@ -78,6 +99,10 @@ fun ForgotPasswordScreen(
             verticalArrangement = Arrangement.Top,
 
             ) {
+            if (userData?.profilePictureUrl != null) {
+                AsyncImage(model = userData.profilePictureUrl, contentDescription = null)
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -89,19 +114,39 @@ fun ForgotPasswordScreen(
                 Row(
                     Modifier.fillMaxWidth()
                 ) {
-                    Text(
-                        text = "Quên mật khẩu",
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Light,
-                        modifier = Modifier.fillMaxWidth(),
-                        color =  mainColor,
-                        fontSize = 35.sp,
-                    )
+                    if(currentUser!=null){
+                        if(currentUser.email!=null){
+                        viewModel.getID()
+                        }
+                        idUser = viewModel.idUser
+                        Text(
+                            text = idUser,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Light,
+                            modifier = Modifier.fillMaxWidth(),
+                            color = mainColor,
+                            fontSize = 35.sp,
+                        )
+                    }
+//                    if(userData?.userId!=null){
+//                        Text(
+//                            text = userData.userId,
+//                            textAlign = TextAlign.Center,
+//                            fontWeight = FontWeight.Light,
+//                            modifier = Modifier.fillMaxWidth(),
+//                            color = mainColor,
+//                            fontSize = 35.sp,
+//                        )
+//                    }
                 }
                 Spacer(modifier = Modifier.padding(16.dp))
                 Text(text = "Quên mật khẩu ư?", fontSize = 16.sp, color = guideTextColor)
                 Text(text = "Đừng lo lắng", fontSize = 16.sp, color = guideTextColor)
-                Text(text = "Chúng tôi sẽ giúp bạn tìm lại tài khoản", fontSize = 16.sp, color = guideTextColor)
+                Text(
+                    text = "Chúng tôi sẽ giúp bạn tìm lại tài khoản",
+                    fontSize = 16.sp,
+                    color = guideTextColor
+                )
                 OutlinedTextField(
                     value = "",
                     onValueChange = {},
@@ -124,12 +169,14 @@ fun ForgotPasswordScreen(
                 ) {
                     Button(
                         shape = RoundedCornerShape(0),
-                        colors = ButtonDefaults.buttonColors(containerColor = mainColor, contentColor = Color.White),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = mainColor,
+                            contentColor = Color.White
+                        ),
                         modifier = Modifier.size(width = 350.dp, height = 45.dp),
-                        onClick = {
-
-                        }) {
-                        Text(text="Tìm kiếm", fontSize = 22.sp, fontWeight = FontWeight.Light)
+                        onClick = onSignOutClick
+                    ) {
+                        Text(text = "Log out", fontSize = 22.sp, fontWeight = FontWeight.Light)
                     }
                 }
             }

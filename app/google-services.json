@@ -1,33 +1,42 @@
 {
   "project_info": {
-    "project_number": "27387512265",
-    "project_id": "doan3tuan-3bf2d",
-    "storage_bucket": "doan3tuan-3bf2d.appspot.com"
+    "project_number": "702550881222",
+    "firebase_url": "https://yournews-b1583-default-rtdb.firebaseio.com",
+    "project_id": "yournews-b1583",
+    "storage_bucket": "yournews-b1583.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:27387512265:android:996f2402259204dbd0d418",
+        "mobilesdk_app_id": "1:702550881222:android:4f6bf37d4f8a354e0d78c7",
         "android_client_info": {
           "package_name": "com.example.doan_3tuan"
         }
       },
       "oauth_client": [
         {
-          "client_id": "27387512265-e5fm212ie901r88vjanr0olngkdn16ci.apps.googleusercontent.com",
+          "client_id": "702550881222-9dpivr0uqg4bm5v1bntsbtjvgd4emmqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.doan_3tuan",
+            "certificate_hash": "6b48125a5b2172790fb16d9abbce58b9e253926f"
+          }
+        },
+        {
+          "client_id": "702550881222-fuu9m2ie95e8rhdo6ukfsojogivn2rs0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDjWWWidFEDhET6ifqUPfgjJFDPPmzGfo4"
+          "current_key": "AIzaSyDqah1iGimGabP7A5j-S5SqxVh1moMUNlA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "27387512265-e5fm212ie901r88vjanr0olngkdn16ci.apps.googleusercontent.com",
+              "client_id": "702550881222-fuu9m2ie95e8rhdo6ukfsojogivn2rs0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.tasks.await
@@ -63,9 +64,8 @@ class GoogleAuthUiClient (
     }
     suspend fun signOut(){
         try {
-            Log.d("DEBUG","here signOut")
             oneTapClient.signOut().await()
-            auth.signOut()
+            FirebaseAuth.getInstance().signOut()
         }catch (e: Exception){
             e.printStackTrace()
             if (e is CancellationException) throw e

@@ -40,16 +40,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.doan_3tuan.View.Screen
+import com.example.doan_3tuan.ViewModel.Screens
 import com.example.doan_3tuan.ViewModel.AccountViewModel
-import com.example.doan_3tuan.ViewModel.DialogSample
+import com.example.doan_3tuan.ViewModel.DialogErrorLogin
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -208,7 +206,7 @@ fun RegisterScreen(
                             else {
                                 viewModel.addUser()
                                 if (state.success) {
-                                    navController.navigate(Screen.Login.route) {
+                                    navController.navigate(Screens.Login.route) {
                                         launchSingleTop = true
                                     }
                                 }
@@ -220,7 +218,7 @@ fun RegisterScreen(
                 TextButton(
                     modifier = Modifier.height(35.dp),
                     onClick = {
-                        navController.navigate(Screen.Login.route)
+                        navController.navigate(Screens.Login.route)
                     }
 
                 ) {
@@ -230,13 +228,13 @@ fun RegisterScreen(
         }
     }
     if (openDialog) {
-        var text: String = ""
+        var text = ""
         if (idDialog == 1) {
             text = "Mời bạn nhập đầy đủ"
         } else if(idDialog == 2){
             text = "Mật khẩu không trùng khớp"
         }
-        DialogSample(
+        DialogErrorLogin(
             onDiss = {
                 openDialog = false
             },

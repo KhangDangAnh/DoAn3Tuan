@@ -1,8 +1,9 @@
 package com.example.doan_3tuan.Model
 
 data class User (
+    var id :String? = "",
     var email :String= "",
-    var password:String = ""
+    var password:String = "",
 )
 
 data class SignInResult(

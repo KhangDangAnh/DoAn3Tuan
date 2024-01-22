@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,7 +46,12 @@ import com.example.doan_3tuan.Model.NavRoot
 import com.example.doan_3tuan.Model.UiResult
 import com.example.doan_3tuan.R
 import com.example.doan_3tuan.View.Component.Baiviet_Card
+import com.example.doan_3tuan.ViewModel.AccountViewModel
 import com.example.doan_3tuan.ViewModel.BVviewModel.HomeViewModel
+import com.example.doan_3tuan.ViewModel.DialogErrorLogin
+import com.example.doan_3tuan.ViewModel.DialogRequireLogin
+import com.example.doan_3tuan.ViewModel.Screens
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,6 +63,16 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
     val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     val homeState = viewModel.uiState.collectAsStateWithLifecycle()
     val state = homeState.value
+
+    val accountViewModel:AccountViewModel = viewModel(modelClass = AccountViewModel::class.java)
+    var isLoggedIn by remember { mutableStateOf(false) }
+
+    var idDialog by remember{ mutableStateOf(0)}
+    var openDialog by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = true){
+        accountViewModel.checkLoginStatus()
+        isLoggedIn =accountViewModel.isLoggedIn
+    }
     when (state) {
         is UiResult.Fail -> {
         }
@@ -98,6 +114,23 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
                                 contentDescription = ""
                             )
                         }
+                        //Icon Tim
+                        IconButton(
+                            onClick = {
+                                if(!isLoggedIn){
+                                    idDialog = 1
+                                    openDialog = true
+                                }
+                                else {
+                                    // Tăng lượt thích
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_favorite_24),
+                                contentDescription = ""
+                            )
+                        }
                     })
                 }
             ) {
@@ -129,4 +162,21 @@ fun Chitiet_Screen(navController: NavHostController, linkurl: String) {
             }
         }
     }
+    if (openDialog) {
+        var text = ""
+        if (idDialog == 1) {
+            text = "Hãy đăng nhập để xử dụng chức năng"
+        }
+        DialogRequireLogin(
+            onDiss = {
+                openDialog = false
+            },
+            onConfirm = {
+                openDialog = false
+                navController.navigate(Screens.Login.route)
+            },
+            title = text,
+        )
+    }
 }
+
