@@ -36,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -48,10 +49,12 @@ import com.example.doan_3tuan.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingFontScreen(isFontLarge: Boolean, selectedFont: Boolean, onFontUpdated: () -> Unit, onLargeUpdated: () -> Unit) {
+fun SettingFontScreen() {
+    val ctx = LocalContext.current
+    val viewModel = SettingViewModel(context = ctx)
     var inriaSansFontFamily by remember { mutableStateOf(FontFamily(Font(R.font.inriasans))) }
     var arialFontFamily by remember { mutableStateOf(FontFamily(Font(R.font.arial))) }
-    var styleFont = if (selectedFont) inriaSansFontFamily else arialFontFamily
+    var styleFont = if (viewModel.font) inriaSansFontFamily else arialFontFamily
     Scaffold(
         topBar = {
             TopAppBar(
@@ -108,7 +111,7 @@ fun SettingFontScreen(isFontLarge: Boolean, selectedFont: Boolean, onFontUpdated
                 ) {
                     Text(
                         fontFamily = styleFont,
-                        text = if(selectedFont) "Inria Sans" else "Arial",
+                        text = if(viewModel.font) "Inria Sans" else "Arial",
                         color = Color.Black,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -122,16 +125,14 @@ fun SettingFontScreen(isFontLarge: Boolean, selectedFont: Boolean, onFontUpdated
                         DropdownMenuItem(
                             text = { Text(text = "Inria Sans", color = Color.White) },
                             onClick = {
-                                selectedFont
-                                onFontUpdated()
+                                viewModel.saveFontState(true,"Inria Sans")
                                 expanded = false
                             },
                         )
                         DropdownMenuItem(
                             text = { Text(text = "Arial", color = Color.White) },
                             onClick = {
-                                selectedFont
-                                onFontUpdated()
+                                viewModel.saveFontState(false, "Arial")
                                 expanded = false
                             },
                         )
@@ -160,11 +161,13 @@ fun SettingFontScreen(isFontLarge: Boolean, selectedFont: Boolean, onFontUpdated
                 Text(text = "Nhỏ", fontSize = 16.sp, fontFamily = styleFont)
                 Spacer(modifier = Modifier.padding(end = 5.dp))
                 Switch(
-                    checked = isFontLarge,
-                    onCheckedChange = { onLargeUpdated()
+                    checked = viewModel.large,
+                    onCheckedChange = {
+                        viewModel.large = it
+                        viewModel.saveLargeState(it)
                     },
                     thumbContent = {
-                        if (isFontLarge) {
+                        if (viewModel.large) {
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_circle_24),
                                 contentDescription = ""
@@ -195,7 +198,7 @@ fun SettingFontScreen(isFontLarge: Boolean, selectedFont: Boolean, onFontUpdated
                         " ngày nghỉ lễ, tết được thực hiện theo quy định của Luật lao động và các văn bản hướng dẫn" +
                         " hàng năm. Như vậy lịch nghỉ Tết Nguyên đán 2024 của học sinh Hà Nội sẽ bắt đầu từ ngày " +
                         "8-14/2/2024 (tức 29 tháng Chạp năm Quý Mão đến hết mùng 5 tháng Giêng năm Giáp Thìn).",
-                fontSize = if (isFontLarge) 20.sp else 16.sp,
+                fontSize = if (viewModel.large) 20.sp else 16.sp,
                 fontFamily = styleFont
             )
         }

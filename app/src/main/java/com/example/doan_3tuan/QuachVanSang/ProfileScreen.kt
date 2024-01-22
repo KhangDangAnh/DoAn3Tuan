@@ -1,12 +1,6 @@
 package com.example.doan_3tuan.QuachVanSang
 
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,32 +10,27 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,21 +39,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.doan_3tuan.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(darkTheme: Boolean, onThemeUpdated: () -> Unit) {
+fun ProfileScreen() {
+    val ctx = LocalContext.current
+    val viewModel = SettingViewModel(context = ctx)
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(colorScheme.surface),
         topBar = {
             TopAppBar(
                 title = {
@@ -207,11 +200,12 @@ fun ProfileScreen(darkTheme: Boolean, onThemeUpdated: () -> Unit) {
                         )
                     }
                 }
-                ThemeSwitcher(
-                    darkTheme = darkTheme,
-                    size = 37.dp,
-                    padding = 5.dp,
-                    onClick = onThemeUpdated
+                Switch(
+                    checked = viewModel.theme,
+                    onCheckedChange = {
+                        viewModel.theme = it
+                        viewModel.saveThemeState(it)
+                    }
                 )
             }
             Divider(
@@ -263,76 +257,6 @@ fun ProfileScreen(darkTheme: Boolean, onThemeUpdated: () -> Unit) {
         }
     }
 }
-
-@Composable
-fun ThemeSwitcher(
-    darkTheme: Boolean = false,
-    size: Dp = 120.dp,
-    iconSize: Dp = size / 3,
-    padding: Dp = 10.dp,
-    borderWidth: Dp = 1.dp,
-    parentShape: Shape = CircleShape,
-    toggleShape: Shape = CircleShape,
-    animationSpec: AnimationSpec<Dp> = tween(durationMillis = 300),
-    onClick: () -> Unit
-) {
-    val offset by animateDpAsState(
-        targetValue = if (darkTheme) 0.dp else size,
-        animationSpec = animationSpec
-    )
-    Box(
-        modifier = Modifier
-            .width(size * 2)
-            .height(size)
-            .clip(shape = parentShape)
-            .clickable { onClick() }
-            .background(MaterialTheme.colorScheme.secondaryContainer)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(size)
-                .offset(x = offset)
-                .padding(all = padding)
-                .clip(shape = toggleShape)
-                .background(Color.Black)
-        ) {}
-        Row(
-            modifier = Modifier
-                .border(
-                    border = BorderStroke(
-                        width = borderWidth,
-                        color = if (darkTheme) Color.White else Color.Black
-                    ),
-                    shape = parentShape
-                )
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(size),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    modifier = Modifier.size(iconSize),
-                    painter = painterResource(id = R.drawable.baseline_nightlight_24),
-                    contentDescription = "Theme Icon",
-                    tint = if (darkTheme) Color.White else Color.Black
-                )
-            }
-            Box(
-                modifier = Modifier.size(size),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    modifier = Modifier.size(iconSize),
-                    painter = painterResource(id = R.drawable.outline_wb_sunny_24),
-                    contentDescription = "Theme Icon",
-                    tint = if (darkTheme) Color.Black else Color.White
-                )
-            }
-        }
-    }
-}
-
 @Composable
 fun LienHeWithDialog() {
     var showDialog by remember { mutableStateOf(false) }
