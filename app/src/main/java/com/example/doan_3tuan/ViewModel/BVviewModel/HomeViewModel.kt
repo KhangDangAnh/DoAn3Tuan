@@ -3,7 +3,7 @@ import com.example.doan_3tuan.Model.LoadRss.CloudService
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doan_3tuan.Model.LoadRss.Rss
-import com.example.doan_3tuan.Model.UiResult
+import com.example.doan_3tuan.Model.LoadRss.UiResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -39,7 +39,7 @@ class HomeViewModel : ViewModel() {
                     UiResult.Success(home)
                 }
             } catch (err: Throwable) {
-                _uiState.update {UiResult.Fail(err) }
+                _uiState.update { UiResult.Fail(err) }
             }
         }
     }

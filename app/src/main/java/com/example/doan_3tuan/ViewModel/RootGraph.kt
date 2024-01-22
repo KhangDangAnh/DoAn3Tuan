@@ -14,6 +14,7 @@ import com.example.doan_3tuan.View.Screen.Chitiet_Screen
 import com.example.doan_3tuan.View.Screen.SaveNewsScreen
 import com.example.doan_3tuan.View.Screen.TimKiemScreen
 import com.example.doan_3tuan.View.Screen.TrangChuScreen
+import com.example.doan_3tuan.View.Screen.XuhuongScreen
 import com.example.doan_3tuan.ViewModel.BVviewModel.NewsViewModel
 
 @Composable
@@ -43,6 +44,10 @@ fun RootGraph(navHostController: NavHostController) {
         {
             val id = it.arguments?.getString("id")
             SaveNewsScreen(navHostController, id ?: "")
+        }
+        composable(NavRoot.xuhuong.root)
+        {
+            XuhuongScreen(navController = navHostController)
         }
     }
 }

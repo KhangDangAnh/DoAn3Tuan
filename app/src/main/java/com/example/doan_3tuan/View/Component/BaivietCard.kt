@@ -20,7 +20,6 @@ import com.example.doan_3tuan.Model.LoadRss.Baiviet
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Baiviet_Card(item: Baiviet, onItemClicked: (Baiviet) -> Unit) {
-    val position = item.description.indexOf("></a>")
     Card(
         modifier = Modifier
             .padding(8.dp)

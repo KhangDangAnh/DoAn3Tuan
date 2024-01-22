@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.AccountCircle
@@ -27,8 +26,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,15 +33,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -53,16 +44,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.doan_3tuan.Model.BottomNavigationItem
-import com.example.doan_3tuan.Model.LoadRss.Baiviet
+import com.example.doan_3tuan.Model.Drawer
 import com.example.doan_3tuan.Model.NavRoot
-import com.example.doan_3tuan.Model.UiResult
+import com.example.doan_3tuan.Model.LoadRss.UiResult
 import com.example.doan_3tuan.R
 import com.example.doan_3tuan.View.Component.Baiviet_Card
+import com.example.doan_3tuan.View.Component.NavBottomAppBar
 import com.example.doan_3tuan.ViewModel.BVviewModel.NewsViewModel
-import io.ktor.http.ContentType.Application.Json
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,43 +61,21 @@ fun TrangChuScreen(navController: NavHostController) {
     val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     val homeState = viewModel.uiState.collectAsStateWithLifecycle()
     val state = homeState.value
-    val items = listOf(
-        BottomNavigationItem(
-            "Tin Tức",
-            R.drawable.baseline_article_24,
-            R.drawable.outline_article_24,
-        ),
-        BottomNavigationItem(
-            "Video",
-            R.drawable.baseline_video_library_24,
-            R.drawable.outline_video_library_24,
-        ),
-        BottomNavigationItem(
-            "Xu hướng",
-            R.drawable.baseline_data_thresholding_24,
-            R.drawable.outline_data_thresholding_24,
-        ),
-        BottomNavigationItem(
-            "Tiện ích",
-            R.drawable.baseline_dataset_24,
-            R.drawable.outline_dataset_24,
-        ),
-    )
-    var selectedItemIndex by rememberSaveable {
-        mutableStateOf(0)
-    }
     val navdrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val congcu = listOf(
-        kotlin.Pair("Tin Tức", R.drawable.baseline_article_24),
-        kotlin.Pair("Video", R.drawable.baseline_video_library_24),
-        kotlin.Pair("Xu Hướng", R.drawable.baseline_data_thresholding_24),
-        kotlin.Pair("Tiện Ích", R.drawable.baseline_dataset_24),
-        kotlin.Pair("Thông Báo", R.drawable.outline_circle_notifications_24),
-        kotlin.Pair("Đã Lưu", R.drawable.baseline_bookmark_24),
+        Drawer("Tin Tức", R.drawable.baseline_article_24, NavRoot.trangchu.root),
+        Drawer("Video", R.drawable.baseline_video_library_24, NavRoot.trangchu.root),
+        Drawer("Xu Hướng", R.drawable.baseline_data_thresholding_24, NavRoot.xuhuong.root),
+        Drawer("Tiện Ích", R.drawable.baseline_dataset_24, NavRoot.trangchu.root),
+        Drawer("Thông Báo", R.drawable.outline_circle_notifications_24, NavRoot.luunews.root),
+        Drawer("Đã Lưu", R.drawable.baseline_bookmark_24, NavRoot.luunews.root + "?id=${1234}"),
     )
     when (state) {
         is UiResult.Fail -> {
+            val ctx = LocalContext.current
+            val viewModel = NewsViewModel(ctx)
+            var news = viewModel.getNews()
             ModalNavigationDrawer(drawerState = navdrawerState, drawerContent = {
                 ModalDrawerSheet {
                     Column(
@@ -118,7 +85,7 @@ fun TrangChuScreen(navController: NavHostController) {
                     ) {
                         Text(text = "Công cụ", fontWeight = FontWeight.ExtraBold)
                         Divider(Modifier.padding(20.dp))
-                        congcu.forEach { (tool, icon) ->
+                        congcu.forEach {
                             NavigationDrawerItem(
                                 label = {
                                     Row(
@@ -128,14 +95,14 @@ fun TrangChuScreen(navController: NavHostController) {
                                     )
                                     {
                                         Icon(
-                                            painter = painterResource(icon),
+                                            painter = painterResource(it.Icon),
                                             contentDescription = ""
                                         )
-                                        Text(text = tool)
+                                        Text(text = it.title)
                                     }
                                 },
                                 selected = false,
-                                onClick = { navController.navigate(NavRoot.luunews.root + "?id=${1234}") })
+                                onClick = { navController.navigate(it.nav) })
                         }
                     }
                 }
@@ -168,28 +135,26 @@ fun TrangChuScreen(navController: NavHostController) {
                         }
                     )
                 }, bottomBar = {
-                    NavigationBar(
-                        Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)),
-                        containerColor = Color(0xFF07899B)
-                    ) {
-                        items.forEachIndexed { index, item ->
-                            NavigationBarItem(
-                                selected = selectedItemIndex == index,
-                                onClick = { selectedItemIndex = index },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(id = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon),
-                                        contentDescription = item.title
-                                    )
-                                })
-
-                        }
-                    }
+                    NavBottomAppBar(navController = navController)
                 }) {
-                    Column(Modifier.padding(it)) {
-                        MainScreen()
+                    LazyColumn(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(it),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    )
+                    {
+                        item{
+                            Text(text = "Bạn đang ngoại tuyến , vui lòng kiểm tra internet để nhận tin mới .", fontWeight = FontWeight.Bold)
+                        }
+                        items(news)
+                        {
+                            Baiviet_Card(item = it)
+                            {
+                                navController.navigate(NavRoot.chitiet.root +"?link=${it.link}")
+                            }
+                        }
                     }
                 }
             }
@@ -207,7 +172,7 @@ fun TrangChuScreen(navController: NavHostController) {
                     trackColor = MaterialTheme.colorScheme.surfaceVariant,
                 )
                 Spacer(modifier = Modifier.height(30.dp))
-                Text(text = "Loading", fontWeight = FontWeight.ExtraBold)
+                Text(text = "Đang tải", fontWeight = FontWeight.ExtraBold)
             }
         }
 
@@ -222,7 +187,7 @@ fun TrangChuScreen(navController: NavHostController) {
                     ) {
                         Text(text = "Công cụ", fontWeight = FontWeight.ExtraBold)
                         Divider(Modifier.padding(20.dp))
-                        congcu.forEach { (tool, icon) ->
+                        congcu.forEach {
                             NavigationDrawerItem(
                                 label = {
                                     Row(
@@ -232,14 +197,14 @@ fun TrangChuScreen(navController: NavHostController) {
                                     )
                                     {
                                         Icon(
-                                            painter = painterResource(icon),
+                                            painter = painterResource(it.Icon),
                                             contentDescription = ""
                                         )
-                                        Text(text = tool)
+                                        Text(text = it.title)
                                     }
                                 },
                                 selected = false,
-                                onClick = { navController.navigate(NavRoot.luunews.root + "?id=${1234}") })
+                                onClick = { navController.navigate(it.nav) })
                         }
                     }
                 }
@@ -272,25 +237,7 @@ fun TrangChuScreen(navController: NavHostController) {
                         }
                     )
                 }, bottomBar = {
-                    NavigationBar(
-                        Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)),
-                        containerColor = Color(0xFF07899B)
-                    ) {
-                        items.forEachIndexed { index, item ->
-                            NavigationBarItem(
-                                selected = selectedItemIndex == index,
-                                onClick = { selectedItemIndex = index },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(id = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon),
-                                        contentDescription = item.title
-                                    )
-                                })
-
-                        }
-                    }
+                    NavBottomAppBar(navController = navController)
                 }) {
                     LazyColumn(
                         modifier = Modifier
