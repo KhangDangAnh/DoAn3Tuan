@@ -251,9 +251,8 @@ fun TrangChuScreen(navController: NavHostController) {
                                     .wrapContentHeight()
                                     .padding(18.dp)
                             ) {
-                                Text(
-                                    data.title,
-                                    fontWeight = FontWeight.Bold,
+                                Text( text= "Theo ${data.title}",
+                                    fontWeight = FontWeight.ExtraBold,
                                 )
                                 Text(
                                     data.description,

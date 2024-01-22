@@ -91,7 +91,7 @@ fun TimKiemScreen(navController: NavController) {
             val viewModel = NewsViewModel(ctx)
             var news = viewModel.getNews()
             var searchTerm by remember { mutableStateOf(TextFieldValue()) }
-            val filteredRssItems = remember(searchTerm.text) {
+            val SearchItem = remember(searchTerm.text) {
                 news.filter {
                     it.title.contains(
                         searchTerm.text,
@@ -155,7 +155,7 @@ fun TimKiemScreen(navController: NavController) {
                             .fillMaxWidth()
                             .weight(1f)
                     ) {
-                        items(filteredRssItems)
+                        items(SearchItem)
                         {
                             Baiviet_Card(item = it) {
                                 navController.navigate(NavRoot.chitiet.root + "?link=${it.link}")
@@ -183,8 +183,7 @@ fun TimKiemScreen(navController: NavController) {
         is UiResult.Success -> {
             var data = state.data
             var searchTerm by remember { mutableStateOf(TextFieldValue()) }
-
-            val filteredRssItems = remember(searchTerm.text) {
+            val SearchItem = remember(searchTerm.text) {
                 data.baiviet.filter {
                     it.title.contains(
                         searchTerm.text,
@@ -230,7 +229,7 @@ fun TimKiemScreen(navController: NavController) {
                             .fillMaxWidth()
                             .weight(1f)
                     ) {
-                        items(filteredRssItems)
+                        items(SearchItem)
                         {
                             Baiviet_Card(item = it) {
                                 navController.navigate(NavRoot.chitiet.root + "?link=${it.link}")
